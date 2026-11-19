@@ -1,0 +1,291 @@
+"""Gera ``src/caldacerta/data/novidades.json`` (banco complementar).
+
+Rodar com ``uv run python tools/gerar_novidades.py``. POD/PAC dos
+ingredientes com ``pod_pac_auto`` saem do próprio motor (perfil de açúcares).
+Composições: USDA FoodData Central (SR Legacy) e TACO 4ª ed. (NEPA/Unicamp),
+arredondadas; rótulos típicos para os produtos industrializados.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from caldacerta import motor
+
+DESTINO = Path(__file__).resolve().parents[1] / "src" / "caldacerta" / "data" / "novidades.json"
+
+
+def ing(id, nome, categoria, agua, gordura=0, proteina=0, acucares=0, sng=0, lactose=0, outros=0, alcool=0,
+        perfil=None, custo=0, nota=None, **extra):
+    i = {"id": id, "nome": nome, "categoria": categoria, "agua": agua, "gordura": gordura, "proteina": proteina,
+         "acucares": acucares, "sng": sng, "lactose": lactose, "outros_solidos": outros, "alcool": alcool,
+         "pod": 0, "pac": 0, "custo_kg": custo, "pod_pac_auto": True, "perfil_acucares": perfil or {}}
+    soma = motor.soma_composicao(i)
+    assert abs(soma - 100) <= 0.5, (id, soma)
+    i.update(motor.pod_pac_automatico(i))
+    if nota:
+        i["nota"] = nota
+    i.update(extra)
+    return i
+
+
+INGREDIENTES = [
+    # ---- adoçantes sem açúcar (item 3) ----
+    ing("ing_eritritol_puro", "Eritritol (cristal)", "Açúcares", 0, outros=100, perfil={"eritritol": 100}, custo=60,
+        nota="Poliol: ~65% da doçura da sacarose, ~0 kcal, PAC alto (2,8× a sacarose pela massa molar), mas recristaliza "
+             "acima de ~6% da calda (textura arenosa/dura). O app original o removeu por um estudo observacional "
+             "(Witkowski et al., Nature Medicine 2023) que associou eritritol no sangue a eventos cardiovasculares; "
+             "use com moderação e prefira alulose.",
+        fonte="PAC pela massa molar (122,1 g/mol); energia 0 kcal/g (Reg. UE 1169/2011, anexo XIV)."),
+    ing("ing_sucralose_pura", "Sucralose pura (pó)", "Açúcares", 0, outros=100, perfil={"sucralose": 100}, custo=1500,
+        nota="~600× mais doce que a sacarose: 0,15–0,2 g por kg de calda substituem ~100 g de açúcar NA DOÇURA, "
+             "mas não no PAC nem no corpo. Pese em balança de 0,01 g ou dilua 1 g em 99 g de água.",
+        fonte="FDA, Aspartame and Other Sweeteners in Food / High-Intensity Sweeteners."),
+    ing("ing_eritritol_estevia", "Adoçante Eritritol + Estévia (1:1 culinário)", "Açúcares", 0, outros=100,
+        perfil={"eritritol": 99.86, "esteviosideos": 0.14}, custo=90,
+        nota="Mistura de mercado 'troca 1:1 com açúcar' (doçura ≈ sacarose). Para o motor é quase todo eritritol: "
+             "mesmos alertas de recristalização e tolerância digestiva.",
+        fonte="Proporção calculada para POD ≈ 100 com estévia (Reb A) a 250× a sacarose."),
+    # ---- proteínas e lácteos (item 5) ----
+    ing("ing_whey_caseina", "Proteína Whey + Caseína (blend, sem sabor)", "Lácteos", 5, gordura=4, proteina=75, sng=84,
+        lactose=5, outros=7, custo=150, caseina=37.5,
+        nota="Blend 50/50 típico. A caseína encorpa e prende água, mas em excesso deixa a massa pastosa/borrachuda.",
+        fonte="Rótulo típico de blend whey/caseína (75–80% de proteína)."),
+    ing("ing_leite_uf_proteico", "Leite Ultrafiltrado Alta Proteína (semidesnatado)", "Lácteos", 89, gordura=1.9,
+        proteina=5.4, sng=9.1, lactose=2.5, custo=14,
+        nota="Leite concentrado por ultrafiltração: ~70% mais proteína e ~50% menos lactose que o comum. As versões "
+             "'zero lactose' trocam a lactose por glicose + galactose (PAC maior que o informado aqui).",
+        fonte="Rótulo típico (13 g de proteína e 6 g de açúcar por 240 ml)."),
+    ing("ing_leite_1", "Leite Semidesnatado 1%", "Lácteos", 89.9, gordura=1, proteina=3.3, sng=9.1, lactose=4.9, custo=5.5,
+        fonte="USDA FDC 'Milk, lowfat, fluid, 1% milkfat' (SR Legacy 01082)."),
+    ing("ing_bebida_amendoas", "Bebida de Amêndoas sem açúcar", "Líquidos", 97.6, gordura=1.1, proteina=0.4, outros=1.3,
+        custo=25, fibra=0.3, cinzas=0.4,
+        nota="Quase só água (~2% de sólidos): base só com ela congela como gelo. Confira o rótulo: costuma levar "
+             "gomas (gelana, jataí) e carbonato de cálcio.",
+        fonte="USDA FDC 'Beverages, almond milk, unsweetened, shelf stable' (SR Legacy 14016)."),
+    ing("ing_proteina_ervilha", "Proteína de Ervilha isolada", "Pastas & Nuts", 5, gordura=7, proteina=80, outros=88,
+        custo=130, cinzas=5, caseina=0,
+        nota="Proteína vegetal: absorve muita água e pode deixar gosto terroso; combine com cacau ou café.",
+        fonte="Rótulo típico de isolado de ervilha (80% de proteína)."),
+    ing("ing_proteina_chocolate", "Proteína em pó sabor chocolate (whey concentrado, com sucralose)", "Lácteos", 5,
+        gordura=5, proteina=70, sng=76, lactose=4, outros=14, perfil={"sucralose": 0.2}, custo=160, caseina=0,
+        fibra=4, cinzas=1,
+        nota="Um scoop ≈ 30 g. Leva cacau e sucralose: adoça sem PAC.",
+        fonte="Rótulo típico de whey concentrado sabor chocolate (≈ 21 g de proteína por 30 g)."),
+    # ---- estabilizantes (item 4) ----
+    ing("ing_goma_xantana", "Goma Xantana", "Estabilizantes", 10, outros=90, custo=150, fibra=85, cinzas=5,
+        dose_max_pct=0.1, ativacao="frio", defeito_excesso="viscosa/babenta (escorre em fio, textura de catarro)",
+        nota="Hidrata a frio. Muito potente: 0,3–1 g por kg de calda.",
+        fonte="Goff & Hartel, Ice Cream, 7ª ed. (2013), cap. 4 (estabilizantes)."),
+    ing("ing_goma_alfarroba", "Goma Alfarroba (LBG, pura)", "Estabilizantes", 10, proteina=5, outros=90, custo=250,
+        fibra=82, cinzas=1, dose_max_pct=0.3, ativacao="quente",
+        defeito_excesso="gomosa/elástica (puxa como chiclete)",
+        nota="Só hidrata por completo a quente (~80 °C). Numa base fria fica quase inerte.",
+        fonte="Goff & Hartel, Ice Cream, 7ª ed. (2013), cap. 4 (estabilizantes)."),
+    # ---- comida de verdade para o Creami (item 8) ----
+    ing("ing_tamara", "Tâmara sem caroço (Medjool)", "Frutas", 21.3, gordura=0.2, proteina=1.8, acucares=66.5,
+        outros=12, perfil={"glicose": 33.9, "frutose": 32.1, "sacarose": 0.5}, custo=60, fibra=6.7, cinzas=1.7,
+        nota="Açúcar praticamente invertido (glicose + frutose): PAC alto. 1 tâmara Medjool ≈ 24 g sem caroço.",
+        fonte="USDA FDC 'Dates, medjool' (SR Legacy 09421)."),
+    ing("ing_nozes", "Nozes", "Pastas & Nuts", 4.1, gordura=65.2, proteina=15.2, acucares=2.6, outros=28.1,
+        perfil={"sacarose": 2.4, "glicose": 0.1, "frutose": 0.1}, custo=110, fibra=6.7, cinzas=1.8,
+        nota="1 metade de noz ≈ 2 g. Bata bem com o líquido (ou use pasta) para não sobrar grumo.",
+        fonte="USDA FDC 'Nuts, walnuts, english' (SR Legacy 12155)."),
+    ing("ing_castanha_caju", "Castanha de Caju crua", "Pastas & Nuts", 5.2, gordura=43.9, proteina=18.2, acucares=5.9,
+        outros=45, perfil={"sacarose": 5.9}, custo=90, fibra=3.3, cinzas=2.5,
+        fonte="USDA FDC 'Nuts, cashew nuts, raw' (SR Legacy 12087)."),
+    ing("ing_couve_flor", "Couve-flor (arroz de couve-flor congelado)", "Frutas", 92.1, gordura=0.3, proteina=1.9,
+        acucares=1.9, outros=5.7, perfil={"glicose": 0.9, "frutose": 1}, custo=25, fibra=2, cinzas=0.7,
+        nota="Dá volume e corpo com quase zero caloria, mas é ~92% água: sozinha vira gelo. "
+             "Use cozida no vapor e fria se o gosto de repolho incomodar.",
+        fonte="USDA FDC 'Cauliflower, raw' (SR Legacy 11135)."),
+    ing("ing_pure_abobora", "Purê de Abóbora (sem açúcar)", "Frutas", 90, gordura=0.3, proteina=1.1, acucares=3.3,
+        outros=6.4, perfil={"glicose": 1.3, "frutose": 1.3, "sacarose": 0.7}, custo=15, fibra=2.9, cinzas=0.6,
+        fonte="USDA FDC 'Pumpkin, canned, without salt' (SR Legacy 11424)."),
+    ing("ing_acai_polpa", "Polpa de Açaí sem açúcar", "Frutas", 88.7, gordura=3.9, proteina=0.8, outros=7.4, custo=25,
+        fibra=2.6, cinzas=0.4,
+        nota="Quase sem açúcar: o açaí 'na tigela' é doce porque leva xarope de guaraná ou açúcar.",
+        fonte="TACO 4ª ed. (NEPA/Unicamp, 2011): 'Açaí, polpa, congelada'."),
+    ing("ing_cafe_coado", "Café Coado (líquido)", "Líquidos", 99.4, outros=0.6, perfil={"outros_soluveis": 0.6}, custo=8,
+        fonte="USDA FDC 'Beverages, coffee, brewed' (SR Legacy 14209)."),
+]
+
+# Campos novos de ingredientes do banco original (só preenchem o que faltar).
+COMPLEMENTOS = {
+    "ing_goma_guar": {"dose_max_pct": 0.3, "ativacao": "frio", "defeito_excesso": "fibrosa/elástica (textura de cola)",
+                      "fibra": 85, "cinzas": 1},
+    "ing_whey_iso": {"caseina": 0},
+    "ing_cacau_po": {"fibra": 33, "cinzas": 8},
+    "ing_choc_70": {"fibra": 11, "cinzas": 2.3},
+    "ing_choc_54": {"fibra": 7, "cinzas": 1.8},
+    "ing_choc_leite": {"fibra": 3.4, "cinzas": 2.3},
+    "ing_pasta_pistache": {"fibra": 10, "cinzas": 3},
+    "ing_pasta_avela": {"fibra": 9.7, "cinzas": 2.3},
+    "ing_pasta_amendoim": {"fibra": 6, "cinzas": 2.5},
+    "ing_gema": {"cinzas": 1.7},
+    "ing_banana": {"fibra": 2.6, "cinzas": 0.8},
+    "ing_polpa_manga": {"fibra": 1.6, "cinzas": 0.4},
+    "ing_polpa_morango": {"fibra": 2, "cinzas": 0.4},
+    "ing_mirtilo": {"fibra": 2.4, "cinzas": 0.2},
+    "ing_framboesa": {"fibra": 6.5, "cinzas": 0.5},
+    "ing_amora": {"fibra": 5.3, "cinzas": 0.4},
+    "ing_leite_coco": {"fibra": 1.5, "cinzas": 0.7},
+    "ing_aveia": {"fibra": 0.8, "cinzas": 0.3},
+}
+
+PERFIS = [
+    {
+        "id": "fam_creami_fit",
+        "grupo": "Especiais",
+        "nome": "Creami Proteico de Comida de Verdade (fit)",
+        "descricao": "Bases de fruta seca (tâmara), oleaginosas, legumes congelados (couve-flor, abóbora), proteína em pó "
+                     "e bebida vegetal ou água, para raspar no Creami e comer na hora. Pelos padrões clássicos fica muito "
+                     "longe de um gelato: pouco açúcar e pouco sólido dão PAC baixo e muita água livre, então a −18 °C o "
+                     "bloco é duro e cristalino. Quem compensa é a lâmina do Creami (e o Re-spin com um fio de leite). "
+                     "As faixas são realistas para esse estilo, não para vitrine.",
+        "faixas": {"gordura": [2, 7], "proteina": [5, 10], "acucares": [5, 12], "sng": [0, 10],
+                   "outros_solidos": [4, 14], "solidos_totais": [22, 32], "pod": [90, 180], "pac": [180, 240]},
+        "referencia_classica": "fam_branca",
+        "_fonte": "Faixas heurísticas (nenhuma referência clássica cobre bases 'fit'). PAC 180–240 como o perfil "
+                  "Proteico/Light do app (pensado para o Creami a −18 °C); POD alto porque proteínas em pó vêm com "
+                  "sucralose; sólidos totais a partir de 22% (abaixo disso o pote vira gelo).",
+    }
+]
+
+RECEITAS = [
+    {
+        "id": "rec_creami_frosty_amendoas", "nome": "Chocolate Frosty Fit (tâmara, nozes, couve-flor)", "versao": "V1.0",
+        "perfil": "fam_creami_fit", "maquina": "mac_creami", "status": "Exemplo", "processo": "frio",
+        "notas": "Reprodução do 'chocolate frosty' de vídeo: 2½ tâmaras, 8 metades de noz, ¾ de xícara de arroz de "
+                 "couve-flor congelado, 1 scoop de proteína de chocolate e bebida de amêndoas até a linha de 2 xícaras "
+                 "(1 pote). Bata tudo no liquidificador, congele 24 h, Lite Ice Cream + Re-spin com 1 colher de leite.",
+        "atualizada_em": "2026-11-19", "lote_g": 486, "evaporada_g": 0,
+        "itens": [
+            {"ingrediente": "ing_tamara", "gramas": 60, "travado": True},
+            {"ingrediente": "ing_nozes", "gramas": 16, "travado": True},
+            {"ingrediente": "ing_couve_flor", "gramas": 80, "travado": True},
+            {"ingrediente": "ing_proteina_chocolate", "gramas": 30, "travado": True},
+            {"ingrediente": "ing_bebida_amendoas", "gramas": 300, "travado": False},
+        ],
+    },
+    {
+        "id": "rec_creami_frosty_agua", "nome": "Chocolate Frosty Fit balanceado (água, alulose, polidextrose)",
+        "versao": "V1.0", "perfil": "fam_creami_fit", "maquina": "mac_creami", "status": "Exemplo", "processo": "frio",
+        "notas": "Versão corrigida do frosty: 2 tâmaras em vez de 2½ (a proteína com sucralose já adoça), água no "
+                 "lugar da bebida de amêndoas, 14 g de alulose (sobe o PAC: raspa cremoso a −18 °C) e 10 g de "
+                 "polidextrose (sobe os sólidos sem açúcar). Fica 8/8 no perfil fit com ~80 kcal/100 g.",
+        "atualizada_em": "2026-11-19", "lote_g": 498, "evaporada_g": 0,
+        "itens": [
+            {"ingrediente": "ing_tamara", "gramas": 48, "travado": True},
+            {"ingrediente": "ing_nozes", "gramas": 16, "travado": True},
+            {"ingrediente": "ing_couve_flor", "gramas": 80, "travado": True},
+            {"ingrediente": "ing_proteina_chocolate", "gramas": 30, "travado": True},
+            {"ingrediente": "ing_alulose", "gramas": 14, "travado": False},
+            {"ingrediente": "ing_polidextrose", "gramas": 10, "travado": False},
+            {"ingrediente": "ing_agua", "gramas": 300, "travado": False},
+        ],
+    },
+]
+
+CONSTANTES = {
+    "_sobre": "Constantes das funções novas (nutrição, alertas, Creami). Não afetam os cálculos do app original.",
+    "energia": {
+        "_fonte": "Fatores de Atwater gerais (FAO, Food energy - methods of analysis and conversion factors, 2003) e "
+                  "Reg. (UE) 1169/2011, anexo XIV: gordura 9, proteína 4, carboidrato 4, álcool 7, polióis 2,4, "
+                  "eritritol 0, fibra 2, ácidos orgânicos 3 kcal/g. Alulose 0,4 kcal/g (FDA, guia de 2019/2020 "
+                  "sobre alulose). Polidextrose 1 kcal/g (FDA). Adoçantes intensos: 0 (dose irrelevante).",
+        "gordura": 9, "proteina": 4, "carboidrato": 4, "alcool": 7, "fibra": 2, "cinzas": 0,
+        "outros_nao_especificados": 4,
+        "por_acucar": {
+            "sacarose": 4, "glicose": 4, "frutose": 4, "maltose": 4, "trealose": 4, "alulose": 0.4,
+            "solidos_glicose": 4, "maltodextrina": 4, "eritritol": 0, "sorbitol": 2.4, "xilitol": 2.4,
+            "maltitol": 2.4, "inulina": 2, "polidextrose": 1, "acidos_fruta": 3, "acido_latico": 3, "sal": 0,
+            "outros_soluveis": 4, "sucralose": 0, "esteviosideos": 0,
+        },
+    },
+    "densidade": {
+        "_fonte": "Densidade da calda = 1 / Σ(fração/densidade): água 1,0; gordura 0,93; sólidos não gordurosos 1,58 "
+                  "g/ml (H. D. Goff, Dairy Science and Technology e-book, Univ. of Guelph, 'Ice cream mix "
+                  "calculations'); álcool 0,79.",
+        "agua": 1.0, "gordura": 0.93, "solidos_nao_gordurosos": 1.58, "alcool": 0.79,
+    },
+    "porcao_padrao_g": 100,
+    "caseina_fracao_proteina_leite": 0.8,
+    "limites": {
+        "_fonte": "Heurísticas documentadas no README. Caseína: ~80% da proteína do leite (Fox & McSweeney, Dairy "
+                  "Chemistry and Biochemistry); acima de ~4% de caseína na calda a massa fica pastosa/borrachuda. "
+                  "Sólidos totais: sorvetes clássicos têm 36–42% (Goff & Hartel 2013); abaixo de 25% sobra água "
+                  "livre e o gelo domina. Eritritol: solubilidade ~37% m/m a 25 °C, caindo muito no frio (de Cock, "
+                  "Erythritol, em Sweeteners and Sugar Alternatives in Food Technology, 2012); acima de ~6% da "
+                  "calda ele recristaliza na fase não congelada.",
+        "caseina_pct_max": 4.0, "solidos_totais_min_pct": 25, "eritritol_pct_max": 6,
+    },
+    "tolerancia_digestiva_g_porcao": {
+        "_fonte": "Eritritol: EFSA 2023 (reavaliação do E 968, efeito laxativo a partir de ~0,5 g/kg de peso) e "
+                  "Storey et al., Eur J Clin Nutr 2007 (náusea com 50 g, 35 g bem tolerados) -> 25 g por porção, "
+                  "conservador. Alulose: Han et al., Nutrients 2018 (dose única máxima sem sintomas 0,4 g/kg -> 28 g "
+                  "para 70 kg). Sorbitol 10 g, xilitol 20 g, maltitol 30 g: Mäkinen, Int J Dent 2016 (revisão). "
+                  "Inulina 10 g: Bonnema et al., J Am Diet Assoc 2010. Efeitos somam: alertamos quando Σ(g/limiar) ≥ 1.",
+        "eritritol": 25, "alulose": 28, "sorbitol": 10, "xilitol": 20, "maltitol": 30, "inulina": 10,
+    },
+    "eritritol": {
+        "_fonte": "Alerta forte a partir de 30 g (lote, pote ou porção): dose da intervenção em que o eritritol "
+                  "aumentou a reatividade plaquetária (Witkowski et al., Nature Medicine 2023; replicado contra glicose "
+                  "em 2024, Witkowski et al., Arterioscler Thromb Vasc Biol). Associação + efeito plaquetário, não "
+                  "causalidade provada. IDA 0,5 g/kg de peso/dia (EFSA 2023, reavaliação do E 968); alertamos quando "
+                  "uma porção passa de 1/3 da IDA (70 kg -> ~11,7 g).",
+        "alerta_forte_g": 30, "ida_g_kg_dia": 0.5, "fracao_ida_porcao": 1 / 3, "peso_kg_padrao": 70,
+    },
+    "light": {
+        "_sobre": "Objetivo 'light' do balanceamento: o mesmo objetivo original + sair das faixas pesa 10× mais + "
+                  "kcal/100 g relativas à receita inicial × peso_kcal + proteína mínima (penalidade forte) + "
+                  "eritritol: pequena penalidade por % (prefere alulose e outros açúcares) e teto rígido de 1/3 da "
+                  "IDA por porção.",
+        "peso_kcal": 4.0, "fator_fora_da_faixa": 10, "peso_proteina_min": 100,
+        "peso_preferencia_eritritol": 0.5, "peso_teto_eritritol": 1000,
+    },
+    "correcoes": {
+        "_sobre": "Candidatos a correção de UM ingrediente para métricas fora da faixa (só os que existirem no banco; "
+                  "só mostramos as que não pioram a contagem da faixa verde).",
+        "pac": {"ABAIXO": ["ing_alulose", "ing_eritritol_puro", "ing_dextrose"], "ACIMA": ["ing_agua"]},
+        "pod": {"ABAIXO": ["ing_alulose", "ing_eritritol_estevia", "ing_sacarose"]},
+        "gordura": {"ABAIXO": ["ing_creme_35", "ing_pasta_amendoim"]},
+        "solidos_totais": {"ABAIXO": ["ing_leite_po_desn", "ing_polidextrose"]},
+        "proteina": {"ABAIXO": ["ing_whey_iso", "ing_leite_po_desn"]},
+    },
+    "lembretes_processo": {
+        "geral": [
+            "Prove a calda antes de congelar: ela deve parecer um pouco doce demais, porque o frio tira doçura.",
+            "Misture os secos antes (açúcares, leite em pó, gomas, proteína em pó) para não empelotar.",
+            "Bata ~90 s com mixer de mão (ou liquidificador) para hidratar gomas e proteínas e emulsionar a gordura.",
+        ],
+        "creami": [
+            "Espere ~15 min a espuma baixar antes de tampar e congelar: ela ocupa volume e engana a linha MAX.",
+            "Congele o pote nivelado e tampado por pelo menos 24 h a −18 °C ou mais frio; se a base foi aquecida, "
+            "esfrie antes e conte ~36 h (o centro demora mais a firmar).",
+        ],
+        "chocolate": "Mix-in de chocolate: derreta com um pouco de óleo (≈1 colher de chá por 30 g) e regue no buraco "
+                     "central com o programa Mix-in rodando: forma lascas finas (stracciatella) em vez de pedras duras.",
+    },
+}
+
+
+def main():
+    dados = {
+        "_sobre": "Banco complementar do Calda Certa (novidades): ingredientes, perfis, receitas e constantes "
+                  "adicionados depois do app original. Os arquivos do app não mudam. Gerado por "
+                  "tools/gerar_novidades.py.",
+        "ingredientes": INGREDIENTES,
+        "complementos_ingredientes": COMPLEMENTOS,
+        "perfis": PERFIS,
+        "receitas": RECEITAS,
+        "constantes": CONSTANTES,
+    }
+    with open(DESTINO, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(dados, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    print(f"{DESTINO}: {len(INGREDIENTES)} ingredientes, {len(PERFIS)} perfil(is), {len(RECEITAS)} receitas")
+
+
+if __name__ == "__main__":
+    main()

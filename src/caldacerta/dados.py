@@ -16,7 +16,8 @@ from pathlib import Path
 from typing import Any
 
 PACOTE = Path(__file__).resolve().parent / "data"
-ARQUIVOS = ("ingredientes.json", "receitas.json", "maquinas.json", "perfis.json", "constantes.json")
+ARQUIVOS = ("ingredientes.json", "receitas.json", "maquinas.json", "perfis.json", "constantes.json", "novidades.json")
+NOVIDADES = "novidades.json"
 
 
 def dir_usuario() -> Path | None:
@@ -102,3 +103,88 @@ def achar(lista: list[dict], chave: str | None, tipo: str) -> dict:
     if not cand:
         raise KeyError(f"nada encontrado para {tipo} '{chave}'")
     raise KeyError(f"busca ambígua para {tipo} '{chave}': {', '.join(x['id'] for x in cand)}")
+
+
+# --------------------------------------------------------------------------
+# Novidades (banco complementar)
+# --------------------------------------------------------------------------
+# Ingredientes, perfis, receitas e constantes adicionados depois do app
+# original ficam em ``novidades.json``, separados dos arquivos do app. Assim:
+# * as listas originais (``ingredientes()``, ``perfis()``, ``receitas()``)
+#   continuam idênticas, e quem já tem cópias próprias em ``CALDA_DADOS``
+#   não perde nada nem é sobrescrito;
+# * campos novos de ingredientes existentes (``complementos_ingredientes``)
+#   só preenchem o que estiver AUSENTE no ingrediente.
+def novidades() -> dict:
+    try:
+        return ler(NOVIDADES)
+    except FileNotFoundError:
+        return {}
+
+
+def constantes_novidades() -> dict:
+    return novidades().get("constantes", {})
+
+
+def ingredientes_extra() -> list[dict]:
+    return list(novidades().get("ingredientes", []))
+
+
+def _complementar(ings: list[dict], compl: dict) -> list[dict]:
+    out = []
+    for i in ings:
+        c = compl.get(i["id"])
+        if c:
+            i = dict(i)
+            for k, v in c.items():
+                if k not in i:
+                    i[k] = v
+        out.append(i)
+    return out
+
+
+def ingredientes_todos() -> list[dict]:
+    """Banco original + banco complementar (ids repetidos: vale o original),
+    com os campos complementares preenchidos onde faltarem."""
+    nov = novidades()
+    base = ingredientes()
+    ids = {i["id"] for i in base}
+    todos = base + [i for i in nov.get("ingredientes", []) if i["id"] not in ids]
+    return _complementar(todos, nov.get("complementos_ingredientes", {}))
+
+
+def mapa_ingredientes_todos() -> dict[str, dict]:
+    return {i["id"]: i for i in ingredientes_todos()}
+
+
+def perfis_extra() -> list[dict]:
+    return list(novidades().get("perfis", []))
+
+
+def receitas_extra() -> list[dict]:
+    return list(novidades().get("receitas", []))
+
+
+def _juntar(base: list[dict], extra: list[dict]) -> list[dict]:
+    ids = {x["id"] for x in base}
+    return base + [x for x in extra if x["id"] not in ids]
+
+
+def perfis_todos() -> list[dict]:
+    return _juntar(perfis(), perfis_extra())
+
+
+def receitas_todos() -> list[dict]:
+    return _juntar(receitas(), receitas_extra())
+
+
+def achar_com_extras(base: list[dict], extra: list[dict], chave: str | None, tipo: str) -> dict:
+    """Como ``achar`` na lista original; só procura no complementar quando a
+    original não tem NADA para a chave (buscas que já funcionavam continuam
+    dando o mesmo resultado, sem novas ambiguidades)."""
+    try:
+        return achar(base, chave, tipo)
+    except KeyError as e:
+        if not extra or "nada encontrado" not in str(e.args[0] if e.args else ""):
+            raise
+    return achar(extra, chave, tipo)

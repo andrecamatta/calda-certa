@@ -126,6 +126,22 @@
       "grupo": "outros_solidos",
       "pod": 0,
       "pac": 0.5
+    },
+    {
+      "chave": "sucralose",
+      "rotulo": "Sucralose (adoçante intenso)",
+      "grupo": "outros_solidos",
+      "pod": 600,
+      "pac": 0.86,
+      "_fonte": "Novidade (não existia no app). POD ~600× a sacarose (FDA, High-Intensity Sweeteners); PAC pela massa molar: 342,3/397,6 = 0,86."
+    },
+    {
+      "chave": "esteviosideos",
+      "rotulo": "Glicosídeos de esteviol (estévia, Reb A)",
+      "grupo": "outros_solidos",
+      "pod": 250,
+      "pac": 0.35,
+      "_fonte": "Novidade. POD 200–400× (FDA); usamos 250. PAC pela massa molar do Reb A: 342,3/967 = 0,35."
     }
   ],
   "lactose": {

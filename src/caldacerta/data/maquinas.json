@@ -41,7 +41,31 @@
       "A lâmina raspa o bloco e o sorvete sai na textura de servir (~−12/−14 °C), então a meta de PAC é a mesma da vitrine.",
       "Saiu farinhento? Re-spin; se persistir, 1 colher de sopa de leite e Re-spin. Na próxima, suba um pouco o PAC (troque sacarose por dextrose).",
       "Saiu mole demais? PAC alto, ou o freezer está acima de −15 °C."
-    ]
+    ],
+    "potes": [
+      {
+        "id": "padrao",
+        "nome": "Pote padrão 16 oz (Original NC299/NC300/NC301, Breeze, Swirl)",
+        "volume_ml": 473
+      },
+      {
+        "id": "deluxe",
+        "nome": "Pote Deluxe 24 oz (NC500/NC501)",
+        "volume_ml": 709
+      }
+    ],
+    "enchimento_max_fracao": 0.95,
+    "temp_freezer_c": -18,
+    "congelamento_h": {
+      "minimo": 24,
+      "base_aquecida": 36
+    },
+    "orientacoes": [
+      "Não passe da linha MAX: a espuma da mixagem e a expansão da água ao congelar ocupam volume. Na conta de gramas por pote usamos 95% do volume até a linha (folga para a espuma) × a densidade estimada da calda.",
+      "Os potes não são intercambiáveis: o de 24 oz só serve na Deluxe; os de 16 oz servem nas séries Original/Breeze e o Swirl usa os seus de 16 oz.",
+      "Os programas (Ice Cream, Lite Ice Cream, Gelato, Sorbet, Mix-in, Re-spin) têm velocidades e tempos diferentes entre Original, Deluxe e Swirl: o mesmo pote pode sair mais farinhento numa e mais cremoso noutra. Ajuste pelo resultado (Re-spin), não só pelo nome do programa."
+    ],
+    "_fonte": "Potes 16 oz (473 ml) e 24 oz (709 ml) até a linha MAX: guias de usuário e lojas (craftingafamily.com/ninja-creami-deluxe-conversion; abt.com/blog/ninja-creami-vs-deluxe). 24 h a −18 °C: manual Ninja. 36 h para base aquecida e a folga de 95%: heurísticas."
   },
   {
     "id": "mac_vitrine",
