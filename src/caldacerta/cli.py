@@ -16,10 +16,10 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-from . import dados, motor
+from . import dados, motor, nutricao
 from . import receita as rec
 from .ficha import ficha_markdown, ficha_texto
-from .jsnum import br, to_fixed
+from .jsnum import br, js_round, numero, to_fixed
 from .pagina import gerar_html
 from .relatorio import analisar, texto
 
@@ -80,8 +80,34 @@ CAMPOS_NUM = (
 )
 
 
+# Campos opcionais novos (ausentes = comportamento original).
+CAMPOS_OPCIONAIS = (
+    ("kcal_100g", float, "kcal por 100 g (sobrepõe o cálculo pela composição; útil para polióis e açúcares raros)"),
+    ("fibra", float, "fibra alimentar (%, parte dos outros sólidos; 2 kcal/g)"),
+    ("cinzas", float, "minerais/cinzas (%, parte dos outros sólidos; 0 kcal)"),
+    ("caseina", float, "caseína (%; padrão em lácteos: 80%% da proteína)"),
+    ("dose_max_pct", float, "estabilizante: dose máxima em %% da calda (alerta acima)"),
+    ("ativacao", str, "estabilizante: 'frio' ou 'quente' (temperatura de hidratação)"),
+    ("defeito_excesso", str, "estabilizante: defeito de textura quando passa da dose"),
+    ("fonte", str, "fonte da composição"),
+)
+
+
+def _banco_de(iid: str) -> str:
+    """'base' (ingredientes.json) ou 'extra' (novidades.json)."""
+    if any(i["id"] == iid for i in dados.ingredientes()):
+        return "base"
+    return "extra"
+
+
+def _gravar_extras(lista: list[dict]):
+    nov = dados.novidades()
+    nov["ingredientes"] = lista
+    return dados.gravar(dados.NOVIDADES, nov)
+
+
 def cmd_ingredientes(args):
-    lista = dados.ingredientes()
+    lista = dados.ingredientes_todos() if getattr(args, "todos", False) else dados.ingredientes()
     if args.busca:
         b = _sem_acento(args.busca.strip())
         lista = [i for i in lista if b in _sem_acento(i["nome"]) or b in _sem_acento(i["categoria"]) or b in i["id"].lower()]
@@ -93,13 +119,17 @@ def cmd_ingredientes(args):
     cats = sorted({i["categoria"] for i in dados.ingredientes()})
     humano = _tabela(linhas, ["id", "nome", "categoria", "gord%", "açúc%", "POD", "PAC", "R$/kg"])
     humano += f"\n\n{len(lista)} ingrediente(s). Categorias: {', '.join(cats)}"
+    if not getattr(args, "todos", False) and dados.ingredientes_extra():
+        humano += f"\n(+{len(dados.ingredientes_extra())} no banco complementar de novidades: use --todos)"
     _saida(args, lista, humano)
 
 
 def cmd_ingrediente_mostrar(args):
-    i = dados.achar(dados.ingredientes(), args.id, "ingrediente")
+    i = dados.achar_com_extras(dados.ingredientes(), dados.ingredientes_extra(), args.id, "ingrediente")
+    i = dados.mapa_ingredientes_todos().get(i["id"], i)
     av = motor.validar_ingrediente(i)
     usos = [r["id"] for r in dados.receitas() if any(it["ingrediente"] == i["id"] for it in r["itens"])]
+    usos_extra = [r["id"] for r in dados.receitas_extra() if any(it["ingrediente"] == i["id"] for it in r["itens"])]
     obj = {"ingrediente": i, "avisos": av, "sng_pela_lactose": motor.sng_pela_lactose(i), "usado_em": usos}
     h = [f"{i['nome']}  [{i['id']}]", f"Categoria: {i['categoria']}"]
     for k, rot in CAMPOS_NUM:
@@ -113,6 +143,12 @@ def cmd_ingrediente_mostrar(args):
         h.append(f"  [{a['nivel']}] {a['texto']}")
     if usos:
         h.append(f"  Usado em: {', '.join(usos)}")
+    extras = [(c, i[c]) for c, _, _ in CAMPOS_OPCIONAIS if i.get(c) is not None]
+    if extras or usos_extra:
+        h.append(f"  kcal/100 g (estimativa): {br(nutricao.kcal_100g(i), 0)}")
+        h += [f"  {c}: {v}" for c, v in extras]
+        if usos_extra:
+            h.append(f"  Usado nas receitas de novidades: {', '.join(usos_extra)}")
     _saida(args, obj, "\n".join(h))
 
 
@@ -159,6 +195,16 @@ def _aplicar_campos(base: dict, args) -> dict:
             base.pop("nota", None)
         else:
             base["nota"] = args.nota
+    for c, tipo, _ in CAMPOS_OPCIONAIS:
+        v = getattr(args, c, None)
+        if v is None:
+            continue
+        if v == "" and tipo is str:
+            base.pop(c, None)
+        else:
+            base[c] = v
+    if base.get("ativacao") is not None and base["ativacao"] not in nutricao.PROCESSOS:
+        raise ErroCLI("ativacao deve ser 'frio' ou 'quente'")
     return base
 
 
@@ -186,6 +232,9 @@ def _finalizar_ingrediente(i: dict, forcar: bool) -> tuple[dict, list[dict]]:
     k["perfil_acucares"] = dict(i.get("perfil_acucares") or {})
     if i.get("nota"):
         k["nota"] = i["nota"]
+    for c, tipo, _ in CAMPOS_OPCIONAIS:  # novidades: preservados se presentes
+        if i.get(c) is not None:
+            k[c] = (_int_se_inteiro(numero(i[c])) if tipo is float else str(i[c]))
     if k["pod_pac_auto"]:
         k.update(motor.pod_pac_automatico(k))
     avisos = [a for a in motor.validar_ingrediente(k) if a["nivel"] != "error"]
@@ -213,34 +262,40 @@ def cmd_ingrediente_adicionar(args):
 
 
 def cmd_ingrediente_editar(args):
-    lista = dados.ingredientes()
-    atual = dados.achar(lista, args.id, "ingrediente")
+    atual = dados.achar_com_extras(dados.ingredientes(), dados.ingredientes_extra(), args.id, "ingrediente")
+    banco = _banco_de(atual["id"])
+    lista = dados.ingredientes() if banco == "base" else dados.ingredientes_extra()
     novo = _aplicar_campos(dict(atual), args)
     novo["id"] = atual["id"]
     ing, avisos = _finalizar_ingrediente(novo, args.forcar)
-    caminho = dados.gravar("ingredientes.json", [ing if i["id"] == atual["id"] else i for i in lista])
+    nova_lista = [ing if i["id"] == atual["id"] else i for i in lista]
+    caminho = dados.gravar("ingredientes.json", nova_lista) if banco == "base" else _gravar_extras(nova_lista)
     _avisos(args, [a["texto"] for a in avisos])
     _saida(args, {"ingrediente": ing, "avisos": avisos, "arquivo": str(caminho)},
            f'Ingrediente "{ing["nome"]}" atualizado ({caminho}).')
 
 
 def cmd_ingrediente_remover(args):
-    lista = dados.ingredientes()
-    alvo = dados.achar(lista, args.id, "ingrediente")
-    usos = [r["id"] for r in dados.receitas() if any(it["ingrediente"] == alvo["id"] for it in r["itens"])]
+    alvo = dados.achar_com_extras(dados.ingredientes(), dados.ingredientes_extra(), args.id, "ingrediente")
+    banco = _banco_de(alvo["id"])
+    lista = dados.ingredientes() if banco == "base" else dados.ingredientes_extra()
+    receitas = dados.receitas() if banco == "base" else dados.receitas_todos()
+    usos = [r["id"] for r in receitas if any(it["ingrediente"] == alvo["id"] for it in r["itens"])]
     if usos and not args.forcar:
         raise ErroCLI(f"{alvo['id']} é usado em: {', '.join(usos)}. Use --forcar para remover mesmo assim.")
-    caminho = dados.gravar("ingredientes.json", [i for i in lista if i["id"] != alvo["id"]])
+    restante = [i for i in lista if i["id"] != alvo["id"]]
+    caminho = dados.gravar("ingredientes.json", restante) if banco == "base" else _gravar_extras(restante)
     _saida(args, {"removido": alvo["id"], "usado_em": usos, "arquivo": str(caminho)},
            f'Ingrediente "{alvo["nome"]}" removido do banco ({caminho}).')
 
 
 # ----------------------------------------------------------------- receitas
 def cmd_receitas(args):
-    ings = dados.mapa_ingredientes()
+    todos = getattr(args, "todos", False)
+    ings = dados.mapa_ingredientes_todos()
     maqs = {m["id"]: m for m in dados.maquinas()}
-    perfs = {p["id"]: p for p in dados.perfis()}
-    lista = dados.receitas()
+    perfs = {p["id"]: p for p in (dados.perfis_todos() if todos else dados.perfis())}
+    lista = dados.receitas_todos() if todos else dados.receitas()
     if args.busca:
         b = _sem_acento(args.busca)
         lista = [r for r in lista if b in _sem_acento(r["nome"]) or b in r["id"].lower()]
@@ -263,8 +318,11 @@ def cmd_receitas(args):
         linhas.append([r["id"], f"{r['nome']} ({r['versao']})", r.get("perfil") or "", r.get("maquina") or "",
                        br(resumo["peso_g"], 0), br(resumo["gordura"], 1), br(resumo["pod"], 0),
                        br(resumo["pac"], 0), br(resumo["custo_kg"], 2), resumo["faixa_verde"]])
+    extra = ""
+    if not todos and dados.receitas_extra():
+        extra = f"\n(+{len(dados.receitas_extra())} receita(s) de novidades: use --todos)"
     _saida(args, out, _tabela(linhas, ["id", "nome", "perfil", "máquina", "g", "gord%", "POD", "PAC", "R$/kg", "verde"])
-           + f"\n\n{len(out)} receita(s).")
+           + f"\n\n{len(out)} receita(s)." + extra)
 
 
 def cmd_receita_mostrar(args):
@@ -323,11 +381,12 @@ def cmd_maquinas(args):
         h.append(f"{m['id']}: {m['nome']}\n  PAC alvo {aj} pts sobre a vitrine · referência {m['temp_servir']} °C · lote {m['lote_g']} g")
         h.append(f"  {m['nota_lote']}")
         h += [f"  - {d}" for d in m["dicas"]]
+        h += [f"  * {o}" for o in nutricao.orientacoes_maquina(m)]
     _saida(args, lista, "\n".join(h))
 
 
 def cmd_perfis(args):
-    lista = dados.perfis()
+    lista = dados.perfis_todos() if getattr(args, "todos", False) else dados.perfis()
     k = dados.carregar_constantes()
     h = []
     for p in lista:
@@ -335,16 +394,32 @@ def cmd_perfis(args):
         h.append("  " + " · ".join(
             f"{m['rotulo'].split(' (')[0]} {p['faixas'][m['chave']][0]:g}–{p['faixas'][m['chave']][1]:g}" for m in k["metricas"]
         ))
+    if not getattr(args, "todos", False) and dados.perfis_extra():
+        h.append(f"\n(+{len(dados.perfis_extra())} perfil(is) de novidades: use --todos)")
     _saida(args, lista, "\n".join(h))
 
 
 # ----------------------------------------------------------- análise & cia.
-def _lote(args, maquina) -> float | None:
+def _lote(args, maquina, receita=None, ings=None) -> float | None:
     v = getattr(args, "lote", None)
     if v is None:
         return None
     if str(v).lower() in ("maquina", "máquina"):
         return float(maquina["lote_g"])
+    if str(v).lower().startswith("pote"):
+        # novidade: gramas que cabem no pote da máquina (ml até a linha MAX × folga × densidade estimada)
+        _, _, pid = str(v).partition(":")
+        if pid:
+            args.pote = pid  # a nutrição "por pote" usa o mesmo pote
+        pid = pid or getattr(args, "pote", None)
+        if not nutricao.potes(maquina):
+            raise ErroCLI(f"a máquina {maquina['id']} não tem potes cadastrados (use --lote N ou 'maquina')")
+        evap = receita.get("evaporada_g", 0) if args.evaporada is None else args.evaporada
+        z = motor.avaliar(receita["itens"], ings, maquina["temp_servir"], evap)
+        if z["totais"]["gramas"] <= 0:
+            raise ErroCLI("Adicione ingredientes com peso maior que 0g antes de escalonar.")
+        info = nutricao.info_pote(maquina, pid, z["metricas"])
+        return js_round(info["gramas"])
     try:
         return float(str(v).replace(",", "."))
     except ValueError:
@@ -364,15 +439,42 @@ def _carregar_contexto(args):
             i["travado"] = False
         if i["ingrediente"] in travar:
             i["travado"] = True
+    for b in getattr(args, "brix", None) or []:
+        for parte in filter(None, (x.strip() for x in b.split(";" if ";" in b else ","))):
+            iid, _, val = parte.partition("=")
+            iid = iid.strip()
+            if not val:
+                raise ErroCLI("--brix deve ser ingrediente=valor (ex.: ing_polpa_manga=15.5)")
+            if iid not in ids:
+                raise ErroCLI(f"ingrediente {iid} não está na receita")
+            try:
+                v = float(val.replace(",", "."))
+            except ValueError:
+                raise ErroCLI(f"Brix inválido: {val}")
+            for i in r["itens"]:
+                if i["ingrediente"] == iid:
+                    i["brix"] = v
+    if getattr(args, "processo", None):
+        r["processo"] = args.processo
     maq = rec.resolver_maquina(r, args.maquina)
     perf = rec.resolver_perfil(r, args.perfil)
     r["maquina"], r["perfil"] = maq["id"], perf["id"]
     return r, maq, perf, avisos
 
 
+def _ings(r) -> dict:
+    """Banco completo com as leituras de Brix da receita aplicadas."""
+    return nutricao.aplicar_brix(dados.mapa_ingredientes_todos(), r["itens"])[0]
+
+
+def _analisar(args, r, maq, perf, lote=None, **kw):
+    return analisar(r, maq, perf, args.evaporada, lote, porcao_g=getattr(args, "porcao", None),
+                    pote=getattr(args, "pote", None), peso_kg=getattr(args, "peso_kg", None), **kw)
+
+
 def cmd_analisar(args):
     r, maq, perf, avisos = _carregar_contexto(args)
-    a = analisar(r, maq, perf, args.evaporada, _lote(args, maq))
+    a = _analisar(args, r, maq, perf, _lote(args, maq, r, _ings(r)))
     a["avisos"] = avisos
     _avisos(args, avisos)
     _saida(args, a, texto(a))
@@ -380,11 +482,27 @@ def cmd_analisar(args):
 
 def cmd_balancear(args):
     r, maq, perf, avisos = _carregar_contexto(args)
-    lote = _lote(args, maq)
-    antes = analisar(r, maq, perf, args.evaporada, lote)
+    ings_todos = dados.mapa_ingredientes_todos()
+    presentes = {i["ingrediente"] for i in r["itens"]}
+    for iid in [x.strip() for x in (getattr(args, "incluir", None) or "").split(",") if x.strip()]:
+        if iid not in ings_todos:
+            raise ErroCLI(f"ingrediente {iid} não existe no banco")
+        if iid not in presentes:  # novidade: entra com 0 g, destravado, para o otimizador poder usar
+            r["itens"].append({"ingrediente": iid, "gramas": 0, "travado": False})
+            presentes.add(iid)
+    ings = _ings(r)
+    lote = _lote(args, maq, r, ings)
+    antes = _analisar(args, r, maq, perf, lote)
     base = antes["receita"]
     faixas = antes["faixas"]
-    res = motor.balancear(base["itens"], dados.mapa_ingredientes(), faixas, base["evaporada_g"])
+    objetivo = getattr(args, "objetivo", None) or "padrao"
+    if objetivo == "padrao" and getattr(args, "proteina_min", None) is not None:
+        raise ErroCLI("--proteina-min só vale com --objetivo light")
+    funcao = None
+    if objetivo == "light":
+        funcao, _ = nutricao.objetivo_light(base["itens"], ings, faixas, base["evaporada_g"], args.proteina_min,
+                                            porcao_g=args.porcao, peso_kg=args.peso_kg)
+    res = motor.balancear(base["itens"], ings, faixas, base["evaporada_g"], funcao_objetivo=funcao)
     if not res["sucesso"]:
         raise ErroCLI(res["mensagem"])
     nova = dict(base)
@@ -395,7 +513,8 @@ def cmd_balancear(args):
     from .jsnum import js_round
 
     nova["lote_g"] = js_round(soma) or 1000
-    depois = analisar(nova, maq, perf, base["evaporada_g"])
+    depois = analisar(nova, maq, perf, base["evaporada_g"], porcao_g=getattr(args, "porcao", None),
+                      pote=getattr(args, "pote", None), peso_kg=getattr(args, "peso_kg", None))
     arquivo = rec.para_arquivo(nova)
     if args.saida:
         _gravar_arquivo(args.saida, json.dumps(arquivo, ensure_ascii=False, indent=2) + "\n")
@@ -413,8 +532,17 @@ def cmd_balancear(args):
         "avisos": avisos,
         "arquivo": args.saida,
     }
-    ings = dados.mapa_ingredientes()
     h = [res["mensagem"], f"Faixa verde: {obj['faixa_verde_antes']} → {obj['faixa_verde_depois']}", ""]
+    if objetivo == "light":
+        ka, kd = antes["nutricao"]["kcal_100g"], depois["nutricao"]["kcal_100g"]
+        pa, pd = antes["nutricao"]["proteina_pct"], depois["nutricao"]["proteina_pct"]
+        obj["objetivo"] = "light"
+        obj["proteina_min"] = args.proteina_min
+        obj["kcal_100g_antes"], obj["kcal_100g_depois"] = ka, kd
+        obj["proteina_pct_antes"], obj["proteina_pct_depois"] = pa, pd
+        h.insert(2, f"Objetivo light: {br(ka, 0)} → {br(kd, 0)} kcal/100 g · proteína {br(pa, 1)}% → {br(pd, 1)}%"
+                 + (f" (mínimo {br(args.proteina_min, 1)}%{'' if pd >= args.proteina_min - 0.05 else ': NÃO atingido'})"
+                    if args.proteina_min is not None else ""))
     for m in obj["mudancas"]:
         nome = ings.get(m["ingrediente"], {}).get("nome", m["ingrediente"])
         delta = m["depois_g"] - numero_seguro(m["antes_g"])
@@ -435,13 +563,15 @@ def numero_seguro(x) -> float:
 
 def cmd_ficha(args):
     r, maq, perf, avisos = _carregar_contexto(args)
-    a = analisar(r, maq, perf, args.evaporada, _lote(args, maq))
+    ings = _ings(r)
+    a = _analisar(args, r, maq, perf, _lote(args, maq, r, ings))
     rr = a["receita"]
-    ings = dados.mapa_ingredientes()
     if args.formato == "texto":
         conteudo = ficha_texto(rr["nome"], rr["versao"], rr["itens"], ings, perf, maq, rr["evaporada_g"]) + "\n"
     else:
-        conteudo = ficha_markdown(rr["nome"], rr["versao"], rr["itens"], ings, perf, maq, rr["evaporada_g"], rr.get("notas"))
+        conteudo = ficha_markdown(rr["nome"], rr["versao"], rr["itens"], ings, perf, maq, rr["evaporada_g"], rr.get("notas"),
+                                  porcao_g=getattr(args, "porcao", None), pote=getattr(args, "pote", None),
+                                  processo=rr.get("processo"), peso_kg=getattr(args, "peso_kg", None))
     _avisos(args, avisos)
     if args.saida:
         _gravar_arquivo(args.saida, conteudo)
@@ -454,9 +584,10 @@ def cmd_ficha(args):
 
 def cmd_pagina(args):
     r, maq, perf, avisos = _carregar_contexto(args)
-    a = analisar(r, maq, perf, args.evaporada, _lote(args, maq))
+    ings = _ings(r)
+    a = _analisar(args, r, maq, perf, _lote(args, maq, r, ings))
     rr = a["receita"]
-    ft = ficha_texto(rr["nome"], rr["versao"], rr["itens"], dados.mapa_ingredientes(), perf, maq, rr["evaporada_g"])
+    ft = ficha_texto(rr["nome"], rr["versao"], rr["itens"], ings, perf, maq, rr["evaporada_g"])
     html = gerar_html(a, ft)
     _gravar_arquivo(args.saida, html)
     _avisos(args, avisos)
@@ -481,6 +612,7 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("ingredientes", parents=[comum], help="lista o banco de ingredientes")
     s.add_argument("--busca", help="trecho do nome, categoria ou id")
     s.add_argument("--familia", "--categoria", dest="familia", help="categoria (ex.: Lácteos, Açúcares, Frutas)")
+    s.add_argument("--todos", action="store_true", help="inclui o banco complementar de novidades")
     s.set_defaults(func=cmd_ingredientes)
 
     ing = sub.add_parser("ingrediente", parents=[comum], help="mostra, adiciona, edita ou remove um ingrediente")
@@ -504,6 +636,9 @@ def _parser() -> argparse.ArgumentParser:
         sp.add_argument("--nota", help="observação ('' apaga)")
         sp.add_argument("--de-json", dest="de_json", help="lê os campos de um arquivo JSON (ou - para stdin)")
         sp.add_argument("--forcar", action="store_true", help="aceita composição que não soma 100%%")
+        for c, tipo, ajuda in CAMPOS_OPCIONAIS:
+            kw = {"choices": nutricao.PROCESSOS} if c == "ativacao" else {}
+            sp.add_argument(f"--{c.replace('_', '-')}", dest=c, type=tipo, help=ajuda, **kw)
         if novo:
             sp.add_argument("--id", help="id (padrão: ing_custom_<nome>)")
 
@@ -522,6 +657,7 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("receitas", parents=[comum], help="lista a biblioteca de receitas")
     s.add_argument("--busca")
     s.add_argument("--perfil", help="id do perfil (ex.: fam_branca)")
+    s.add_argument("--todos", action="store_true", help="inclui as receitas de novidades")
     s.set_defaults(func=cmd_receitas)
 
     rc = sub.add_parser("receita", parents=[comum], help="mostra, salva ou remove uma receita da biblioteca")
@@ -540,14 +676,24 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("maquinas", parents=[comum], help="lista máquinas (ajuste de PAC, temperatura, lote)")
     s.set_defaults(func=cmd_maquinas)
     s = sub.add_parser("perfis", parents=[comum], help="lista perfis/estilos com as faixas alvo")
+    s.add_argument("--todos", action="store_true", help="inclui os perfis de novidades")
     s.set_defaults(func=cmd_perfis)
 
     def ctx(sp, travas=False):
         sp.add_argument("receita", help="arquivo .json, '-' (stdin) ou id/nome de receita da biblioteca")
         sp.add_argument("--maquina", help="id da máquina (padrão: a da receita)")
         sp.add_argument("--perfil", help="id do perfil (padrão: o da receita)")
-        sp.add_argument("--lote", help="escala a receita para N gramas finais (ou 'maquina' para o lote da máquina)")
+        sp.add_argument("--lote", help="escala a receita para N gramas finais, 'maquina' (lote da máquina) ou "
+                        "'pote[:ID]' (gramas que cabem no pote da máquina, pela densidade estimada)")
         sp.add_argument("--evaporada", type=float, help="água evaporada no cozimento, em g (padrão: a da receita)")
+        sp.add_argument("--porcao", type=float, help="tamanho da porção em g para a nutrição (padrão: 100)")
+        sp.add_argument("--pote", help="pote da máquina para nutrição/lote (ex.: padrao, deluxe; padrão: o primeiro)")
+        sp.add_argument("--brix", action="append",
+                        help="Brix medido: ingrediente=valor (repetível ou separado por vírgula), ex.: ing_polpa_manga=15.5")
+        sp.add_argument("--peso-kg", dest="peso_kg", type=float,
+                        help="peso corporal (kg) para o teto de eritritol por porção (1/3 da IDA da EFSA; padrão 70)")
+        sp.add_argument("--processo", choices=nutricao.PROCESSOS,
+                        help="processo da calda ('frio' ou 'quente'); sobrepõe o da receita (alerta de estabilizante)")
         if travas:
             sp.add_argument("--travar", help="ids de ingredientes a travar, separados por vírgula")
             sp.add_argument("--liberar", help="ids a destravar, separados por vírgula, ou 'todos'")
@@ -558,6 +704,11 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("balancear", parents=[comum], help="auto-balanceia os ingredientes destravados")
     ctx(s, travas=True)
     s.add_argument("-o", "--saida", help="grava a receita balanceada neste arquivo .json")
+    s.add_argument("--objetivo", choices=("padrao", "light"), default="padrao",
+                   help="padrao = algoritmo original; light = mesmas faixas verdes, penalizando kcal")
+    s.add_argument("--proteina-min", dest="proteina_min", type=float,
+                   help="com --objetivo light: proteína mínima em %% da calda")
+    s.add_argument("--incluir", help="ids de ingredientes a acrescentar com 0 g (destravados) antes de balancear")
     s.set_defaults(func=cmd_balancear)
     s = sub.add_parser("ficha", parents=[comum], help="ficha técnica (Markdown ou o texto do botão copiar do app)")
     ctx(s)

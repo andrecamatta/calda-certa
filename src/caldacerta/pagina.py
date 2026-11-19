@@ -6,6 +6,7 @@ from __future__ import annotations
 from html import escape
 from typing import Mapping
 
+from . import nutricao
 from .jsnum import br
 
 CSS = """
@@ -106,8 +107,45 @@ def gerar_html(a: Mapping, ficha: str | None = None) -> str:
 
     h.append(f'<section class="card"><h2>Máquina: {e(m["nome"])}</h2><p class="sub">PAC alvo '
              f'{"+" + str(m["ajuste_pac"]) if m["ajuste_pac"] > 0 else "±0"} pts sobre a vitrine · referência {e(str(m["temp_servir"]))} °C · {e(m["nota_lote"])}</p></section>')
+    h += _secoes_novidades(a)
     if ficha:
         h.append(f'<section class="card"><h2>Ficha técnica (texto)</h2><div class="scroll"><pre>{e(ficha)}</pre></div></section>')
     h.append("<footer>Gerado pelo Calda Certa (CLI). Valores de composição são médias de referência: confira o rótulo dos seus insumos.</footer>")
     h.append("</main></body></html>")
     return "\n".join(h) + "\n"
+
+
+def _secoes_novidades(a: Mapping) -> list[str]:
+    """Cartões novos: nutrição, alertas, correções, máquina e lembretes."""
+    e = escape
+    h: list[str] = []
+    if "nutricao" not in a:
+        return h
+    n = a["nutricao"]
+    h.append('<section class="card"><h2>Nutrição (estimativa)</h2><div class="kpis">')
+    h.append(f'<div class="kpi"><span>Energia</span><b>{_f(n["kcal_100g"], 0)} kcal</b><small>por 100 g</small></div>')
+    h.append(f'<div class="kpi"><span>Porção {_f(n["porcao"]["gramas"], 0)} g</span><b>{_f(n["porcao"]["kcal"], 0)} kcal</b>'
+             f'<small>{_f(n["porcao"]["proteina_g"])} g de proteína</small></div>')
+    if n.get("pote") and a.get("pote"):
+        h.append(f'<div class="kpi"><span>Pote (~{_f(a["pote"]["gramas"], 0)} g)</span><b>{_f(n["pote"]["kcal"], 0)} kcal</b>'
+                 f'<small>{_f(n["pote"]["proteina_g"])} g de proteína</small></div>')
+    h.append("</div><ul>" + "".join(f"<li>{e(l)}</li>" for l in nutricao.linhas_nutricao(n, a.get("pote"), a.get("limite_eritritol_porcao_g"))) + "</ul></section>")
+    if a.get("comparacao_classica"):
+        h.append(f'<section class="card"><h2>Comparação com o padrão clássico</h2><p>{e(nutricao.linha_comparacao(a["comparacao_classica"]))}</p></section>')
+    if a.get("ajustes_brix"):
+        h.append('<section class="card"><h2>Brix medido</h2><ul>'
+                 + "".join(f"<li>{e(x['texto'])}</li>" for x in a["ajustes_brix"]) + "</ul></section>")
+    if a.get("alertas"):
+        h.append('<section class="card"><h2>Alertas</h2>'
+                 + "".join(f'<div class="alert bad">{"<strong>" + e(x["texto"]) + "</strong>" if x["nivel"] == "forte" else e(x["texto"])}</div>'
+                         for x in a["alertas"]) + "</section>")
+    if a.get("correcoes"):
+        h.append('<section class="card"><h2>Correções de um ingrediente</h2><p class="sub">Estimativa: cada linha é uma alternativa.</p><ul>'
+                 + "".join(f"<li>{e(nutricao.linha_correcao(c))}</li>" for c in a["correcoes"]) + "</ul></section>")
+    if a.get("orientacoes_maquina"):
+        h.append('<section class="card"><h2>Pote e congelamento</h2><ul>'
+                 + "".join(f"<li>{e(o)}</li>" for o in a["orientacoes_maquina"]) + "</ul></section>")
+    if a.get("lembretes"):
+        h.append('<section class="card"><h2>Lembretes de processo</h2><ul>'
+                 + "".join(f"<li>{e(l)}</li>" for l in a["lembretes"]) + "</ul></section>")
+    return h

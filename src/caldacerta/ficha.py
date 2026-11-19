@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import Mapping, Sequence
 
+from . import nutricao
 from .dados import carregar_constantes
 from .jsnum import br
 from .motor import avaliar, conformidade, faixas_alvo
@@ -59,8 +60,17 @@ def ficha_markdown(
     maquina: Mapping,
     evaporada: float = 0,
     notas: str | None = None,
+    porcao_g: float | None = None,
+    pote: str | None = None,
+    processo: str | None = None,
+    novidades: bool = True,
+    peso_kg: float | None = None,
 ) -> str:
-    """Mesmo conteúdo da ficha do app, em Markdown (tabelas + status da faixa)."""
+    """Mesmo conteúdo da ficha do app, em Markdown (tabelas + status da faixa).
+
+    Com ``novidades`` (padrão), acrescenta ao final: nutrição (porção
+    ``porcao_g``, pote ``pote``), alertas, correções de um ingrediente,
+    orientações da máquina e lembretes de processo."""
     z = avaliar(itens, ingredientes, maquina["temp_servir"], evaporada)
     ct = faixas_alvo(perfil, maquina)
     conf = conformidade(z["metricas"], ct)
@@ -95,4 +105,35 @@ def ficha_markdown(
     if dicas:
         out += ["", "## Ajustes sugeridos", ""]
         out += [f"- **{p['rotulo']}** ({'abaixo' if p['status'] == 'ABAIXO' else 'acima'}): {p['dica']}" for p in dicas]
+    if novidades:
+        ex = nutricao.complementos(itens, ingredientes, maquina, perfil, evaporada, porcao_g, pote, processo, z=z,
+                                   peso_kg=peso_kg)
+        out += secoes_novidades_md(ex)
     return "\n".join(out) + "\n"
+
+
+def secoes_novidades_md(ex) -> list[str]:
+    """Seções novas da ficha em Markdown (depois das originais)."""
+    out = []
+    if ex.get("comparacao_classica"):
+        out += ["", "## Comparação com o padrão clássico", "", nutricao.linha_comparacao(ex["comparacao_classica"]),
+                "", "Estilo 'fit': no Creami a lâmina compensa o PAC baixo; em vitrine ficaria duro e cristalino."]
+    out += ["", "## Nutrição (estimativa)", ""]
+    out += [f"- {l}" for l in nutricao.linhas_nutricao(ex["nutricao"], ex.get("pote"), ex.get("limite_eritritol_porcao_g"))]
+    out.append("- Fatores de Atwater (gordura 9, proteína 4, carboidratos 4, álcool 7 kcal/g; polióis, alulose e "
+               "fibras com fatores próprios). Confira o rótulo dos seus insumos.")
+    if ex.get("alertas"):
+        out += ["", "## Alertas", ""] + [f"- {'**' + a['texto'] + '**' if a['nivel'] == 'forte' else a['texto']}"
+                                         for a in ex["alertas"]]
+    if ex.get("correcoes"):
+        out += ["", "## Correções de um ingrediente (estimativa)", ""]
+        out += [f"- {nutricao.linha_correcao(c)}" for c in ex["correcoes"]]
+    if ex.get("orientacoes_maquina"):
+        out += ["", "## Máquina", ""]
+        if ex.get("pote"):
+            p = ex["pote"]
+            out.append(f"- **Pote:** {p['nome']}: ~{br(p['gramas'], 0)} g de calda "
+                       f"({br(p['volume_ml'] * p['enchimento_max_fracao'], 0)} ml × {br(p['densidade_g_ml'], 2)} g/ml)")
+        out += [f"- {o}" for o in ex["orientacoes_maquina"]]
+    out += ["", "## Lembretes de processo", ""] + [f"- [ ] {l}" for l in ex["lembretes"]]
+    return out

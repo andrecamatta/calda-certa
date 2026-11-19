@@ -4,9 +4,12 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from . import dados
+from . import dados, nutricao
 from .jsnum import br
 from .motor import avaliar, conformidade, escalonar, faixas_alvo
+
+# Campos novos (opcionais) da máquina repassados na análise quando existem.
+CAMPOS_MAQUINA_EXTRA = ("potes", "enchimento_max_fracao", "temp_freezer_c", "congelamento_h", "orientacoes")
 
 
 def analisar(
@@ -16,12 +19,22 @@ def analisar(
     evaporada: float | None = None,
     lote: float | None = None,
     ingredientes: Mapping[str, Mapping] | None = None,
+    porcao_g: float | None = None,
+    pote: str | None = None,
+    processo: str | None = None,
+    peso_kg: float | None = None,
 ) -> dict:
     """Avalia a receita na máquina/perfil escolhidos.
 
     ``evaporada`` (g) sobrepõe ``receita["evaporada_g"]``. ``lote`` (g), se
-    dado, escala a receita antes (como o botão "Escalonar" do app)."""
-    ings = ingredientes if ingredientes is not None else dados.mapa_ingredientes()
+    dado, escala a receita antes (como o botão "Escalonar" do app).
+
+    Novidades (chaves extras no resultado): ``nutricao`` (kcal e macros por
+    100 g, porção ``porcao_g``, pote e lote), ``pote`` (pote da máquina,
+    ``pote`` = id), ``alertas``, ``correcoes``, ``lembretes``,
+    ``ajustes_brix`` (itens com ``brix``) e ``processo`` (sobrepõe o da receita)."""
+    ings = ingredientes if ingredientes is not None else dados.mapa_ingredientes_todos()
+    ings, ajustes_brix = nutricao.aplicar_brix(ings, receita["itens"])
     evap = receita.get("evaporada_g", 0) if evaporada is None else evaporada
     itens = [dict(i) for i in receita["itens"]]
     escalada = False
@@ -36,10 +49,13 @@ def analisar(
     rec["evaporada_g"] = evap
     if escalada:
         rec["lote_g"] = lote
+    proc = processo if processo is not None else receita.get("processo")
+    extra = nutricao.complementos(itens, ings, maquina, perfil, evap, porcao_g, pote, proc, z=z, peso_kg=peso_kg)
+    maq_extra = {k: maquina[k] for k in CAMPOS_MAQUINA_EXTRA if k in maquina}
     return {
         "receita": rec,
         "escalonada_para_g": lote if escalada else None,
-        "maquina": {k: maquina[k] for k in ("id", "nome", "nome_curto", "ajuste_pac", "temp_servir", "lote_g", "nota_lote")},
+        "maquina": {**{k: maquina[k] for k in ("id", "nome", "nome_curto", "ajuste_pac", "temp_servir", "lote_g", "nota_lote")}, **maq_extra},
         "perfil": {k: perfil[k] for k in ("id", "grupo", "nome", "descricao")},
         "faixas": faixas,
         "linhas": [_linha_publica(l, z["totais"]["gramas"]) for l in z["linhas"]],
@@ -52,6 +68,8 @@ def analisar(
         "fracao_agua_congelada_na_maquina": z["fracao_congelada"],
         "temp_servir_ideal_c": z["temp_servir_ideal"],
         "custo": {"por_kg": z["custo_kg"], "lote": z["totais"]["custo"]},
+        **extra,
+        "ajustes_brix": ajustes_brix,
     }
 
 
@@ -109,4 +127,27 @@ def texto(a: Mapping) -> str:
         out += [f"  - {q['rotulo']}: {q['dica']}" for q in dicas]
         if not ar["ok"]:
             out.append("  - Arenosidade: reduza leite em pó ou doce de leite/leite condensado.")
+    out += texto_novidades(a)
     return "\n".join(out)
+
+
+def texto_novidades(a: Mapping) -> list[str]:
+    """Seções novas do dashboard em texto (vêm depois das originais)."""
+    out: list[str] = []
+    if "nutricao" not in a:
+        return out
+    if a.get("comparacao_classica"):
+        out += ["", nutricao.linha_comparacao(a["comparacao_classica"]),
+                "  (estilo 'fit': no Creami a lâmina compensa o PAC baixo; em vitrine ficaria duro e cristalino)"]
+    if a.get("ajustes_brix"):
+        out += ["", "Brix medido:"] + [f"  - {x['texto']}" for x in a["ajustes_brix"]]
+    out += ["", "Nutrição (estimativa):"] + [f"  {l}" for l in nutricao.linhas_nutricao(a["nutricao"], a.get("pote"), a.get("limite_eritritol_porcao_g"))]
+    if a.get("pote"):
+        p = a["pote"]
+        out.append(f"  Pote: {p['nome']} · ~{br(p['gramas'], 0)} g de calda (densidade {br(p['densidade_g_ml'], 2)} g/ml)")
+    if a.get("alertas"):
+        out += ["", "Alertas:"] + [f"  {'!!' if x['nivel'] == 'forte' else '-'} {x['texto']}" for x in a["alertas"]]
+    if a.get("correcoes"):
+        out += ["", "Correções de um ingrediente (estimativa; cada linha é uma alternativa):"]
+        out += [f"  - {nutricao.linha_correcao(c)}" for c in a["correcoes"]]
+    return out
