@@ -1,5 +1,44 @@
 [
   {
+    "id": "rec_vermelhas_whey",
+    "nome": "Frutas Vermelhas e Banana com Whey (sem açúcar adicionado)",
+    "versao": "V1.0",
+    "perfil": "fam_proteico",
+    "maquina": "mac_creami",
+    "status": "Em Teste",
+    "notas": "Só fruta, whey neutro e um pouco de creme: sem açúcar, adoçantes ou gomas. A banana bem madura (com pintas) adoça. Banana, mirtilo, framboesa e whey travados. Bata tudo, congele 24 h nivelado e use o programa Lite Ice Cream; conte com um Re-spin. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-19",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_banana",
+        "gramas": 220.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_mirtilo",
+        "gramas": 95.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_framboesa",
+        "gramas": 95.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_whey_iso",
+        "gramas": 32.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 8.0,
+        "travado": false
+      }
+    ]
+  },
+  {
     "id": "rec_fiordilatte",
     "nome": "Fior di Latte",
     "versao": "V1.0",

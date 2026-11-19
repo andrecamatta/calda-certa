@@ -31,7 +31,7 @@ def rodar_json(capsys, *args):
 
 def test_listas(capsys):
     assert len(rodar_json(capsys, "ingredientes")) == 45
-    assert len(rodar_json(capsys, "receitas")) == 21
+    assert len(rodar_json(capsys, "receitas")) == 22
     assert len(rodar_json(capsys, "maquinas")) == 4
     assert len(rodar_json(capsys, "perfis")) == 11
     leites = rodar_json(capsys, "ingredientes", "--busca", "leite", "--familia", "lacteos")
