@@ -1,0 +1,442 @@
+[
+  {
+    "id": "fam_branca",
+    "grupo": "Gelato (italiano)",
+    "nome": "Gelato · Base Branca",
+    "descricao": "Fior di latte, baunilha, creme e bases neutras.",
+    "faixas": {
+      "gordura": [
+        6,
+        10
+      ],
+      "proteina": [
+        3,
+        4.8
+      ],
+      "acucares": [
+        16,
+        22
+      ],
+      "sng": [
+        8,
+        11
+      ],
+      "outros_solidos": [
+        0,
+        5
+      ],
+      "solidos_totais": [
+        32,
+        42
+      ],
+      "pod": [
+        150,
+        185
+      ],
+      "pac": [
+        240,
+        280
+      ]
+    }
+  },
+  {
+    "id": "fam_chocolate",
+    "grupo": "Gelato (italiano)",
+    "nome": "Gelato · Chocolate",
+    "descricao": "Cacau em pó e/ou chocolate. Muitos sólidos de cacau, que absorvem água e endurecem: PAC um pouco maior.",
+    "faixas": {
+      "gordura": [
+        7,
+        12
+      ],
+      "proteina": [
+        3.5,
+        6
+      ],
+      "acucares": [
+        16,
+        22
+      ],
+      "sng": [
+        6,
+        10.5
+      ],
+      "outros_solidos": [
+        3.5,
+        8
+      ],
+      "solidos_totais": [
+        36,
+        44
+      ],
+      "pod": [
+        150,
+        185
+      ],
+      "pac": [
+        250,
+        290
+      ]
+    }
+  },
+  {
+    "id": "fam_nuts",
+    "grupo": "Gelato (italiano)",
+    "nome": "Gelato · Oleaginosas (pistache, avelã)",
+    "descricao": "Pastas 100% de oleaginosas sobre base láctea.",
+    "faixas": {
+      "gordura": [
+        8,
+        12.5
+      ],
+      "proteina": [
+        4,
+        6.5
+      ],
+      "acucares": [
+        16,
+        21
+      ],
+      "sng": [
+        7,
+        10.5
+      ],
+      "outros_solidos": [
+        2,
+        6
+      ],
+      "solidos_totais": [
+        36,
+        43
+      ],
+      "pod": [
+        145,
+        180
+      ],
+      "pac": [
+        240,
+        280
+      ]
+    }
+  },
+  {
+    "id": "fam_sorbet",
+    "grupo": "Frutas",
+    "nome": "Sorbet (sem leite)",
+    "descricao": "Sem lácteos: fruta, água, açúcares e fibras.",
+    "faixas": {
+      "gordura": [
+        0,
+        1
+      ],
+      "proteina": [
+        0,
+        1.5
+      ],
+      "acucares": [
+        25,
+        31
+      ],
+      "sng": [
+        0,
+        0.5
+      ],
+      "outros_solidos": [
+        1,
+        6
+      ],
+      "solidos_totais": [
+        30,
+        36
+      ],
+      "pod": [
+        200,
+        260
+      ],
+      "pac": [
+        300,
+        350
+      ]
+    }
+  },
+  {
+    "id": "fam_frutado_leite",
+    "grupo": "Gelato (italiano)",
+    "nome": "Gelato · Frutado com Leite",
+    "descricao": "Polpa de fruta sobre base de leite/creme.",
+    "faixas": {
+      "gordura": [
+        3.5,
+        8
+      ],
+      "proteina": [
+        2.3,
+        4
+      ],
+      "acucares": [
+        18,
+        25
+      ],
+      "sng": [
+        6,
+        10
+      ],
+      "outros_solidos": [
+        1,
+        4
+      ],
+      "solidos_totais": [
+        32,
+        40
+      ],
+      "pod": [
+        165,
+        205
+      ],
+      "pac": [
+        255,
+        295
+      ]
+    }
+  },
+  {
+    "id": "fam_americano",
+    "grupo": "Sorvetes cremosos",
+    "nome": "Sorvete Americano (Philadelphia)",
+    "descricao": "Base de creme e leite, sem ovos: mais gordura e menos açúcar que o gelato.",
+    "faixas": {
+      "gordura": [
+        10,
+        16
+      ],
+      "proteina": [
+        3,
+        4.5
+      ],
+      "acucares": [
+        13,
+        18
+      ],
+      "sng": [
+        8,
+        11
+      ],
+      "outros_solidos": [
+        0,
+        2
+      ],
+      "solidos_totais": [
+        36,
+        42
+      ],
+      "pod": [
+        140,
+        180
+      ],
+      "pac": [
+        230,
+        270
+      ]
+    }
+  },
+  {
+    "id": "fam_frances",
+    "grupo": "Sorvetes cremosos",
+    "nome": "Sorvete Francês (custard com gemas)",
+    "descricao": "Creme inglês cozido com gemas: muita gordura e sólidos da gema (contam em outros sólidos).",
+    "faixas": {
+      "gordura": [
+        12,
+        18
+      ],
+      "proteina": [
+        3.5,
+        5.5
+      ],
+      "acucares": [
+        14,
+        18
+      ],
+      "sng": [
+        5.5,
+        10
+      ],
+      "outros_solidos": [
+        1.2,
+        5
+      ],
+      "solidos_totais": [
+        38,
+        44
+      ],
+      "pod": [
+        145,
+        185
+      ],
+      "pac": [
+        235,
+        270
+      ]
+    }
+  },
+  {
+    "id": "fam_froyo",
+    "grupo": "Especiais",
+    "nome": "Frozen Yogurt",
+    "descricao": "Base de iogurte, pouca gordura, mais SNG e azedinho.",
+    "faixas": {
+      "gordura": [
+        2,
+        6
+      ],
+      "proteina": [
+        3.5,
+        6
+      ],
+      "acucares": [
+        15,
+        20
+      ],
+      "sng": [
+        9,
+        13
+      ],
+      "outros_solidos": [
+        0,
+        3
+      ],
+      "solidos_totais": [
+        30,
+        36
+      ],
+      "pod": [
+        150,
+        195
+      ],
+      "pac": [
+        245,
+        285
+      ]
+    }
+  },
+  {
+    "id": "fam_sherbet",
+    "grupo": "Frutas",
+    "nome": "Sherbet (fruta com um pouco de leite)",
+    "descricao": "Entre o sorbet e o sorvete: fruta ácida, açúcar e leite (1–3% de gordura).",
+    "faixas": {
+      "gordura": [
+        0.8,
+        3
+      ],
+      "proteina": [
+        0.8,
+        2.5
+      ],
+      "acucares": [
+        24,
+        30
+      ],
+      "sng": [
+        2,
+        5
+      ],
+      "outros_solidos": [
+        1,
+        5
+      ],
+      "solidos_totais": [
+        30,
+        36
+      ],
+      "pod": [
+        200,
+        250
+      ],
+      "pac": [
+        285,
+        330
+      ]
+    }
+  },
+  {
+    "id": "fam_vegano",
+    "grupo": "Especiais",
+    "nome": "Vegano (base vegetal)",
+    "descricao": "Sem leite: coco, aveia ou castanhas dão a gordura; fibras e gomas dão o corpo.",
+    "faixas": {
+      "gordura": [
+        5,
+        12
+      ],
+      "proteina": [
+        0,
+        3
+      ],
+      "acucares": [
+        16,
+        22
+      ],
+      "sng": [
+        0,
+        0.5
+      ],
+      "outros_solidos": [
+        2,
+        8
+      ],
+      "solidos_totais": [
+        30,
+        38
+      ],
+      "pod": [
+        160,
+        195
+      ],
+      "pac": [
+        245,
+        280
+      ]
+    }
+  },
+  {
+    "id": "fam_proteico",
+    "grupo": "Especiais",
+    "nome": "Proteico / Light (pensado para o Creami)",
+    "descricao": "Muita proteína, pouco açúcar, adoçado com alulose (que conta como açúcar, mas quase não tem calorias). Doçura menor que o normal; complete com sucralose ou stevia a gosto, que não alteram o balanço. Fica duro em vitrine; no Creami a lâmina resolve.",
+    "faixas": {
+      "gordura": [
+        0.3,
+        5
+      ],
+      "proteina": [
+        7,
+        12
+      ],
+      "acucares": [
+        0,
+        12
+      ],
+      "sng": [
+        6,
+        16
+      ],
+      "outros_solidos": [
+        0,
+        10
+      ],
+      "solidos_totais": [
+        18,
+        30
+      ],
+      "pod": [
+        80,
+        140
+      ],
+      "pac": [
+        180,
+        240
+      ]
+    }
+  }
+]

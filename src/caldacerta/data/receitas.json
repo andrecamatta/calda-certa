@@ -1,0 +1,1016 @@
+[
+  {
+    "id": "rec_fiordilatte",
+    "nome": "Fior di Latte",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Receita de exemplo balanceada no app — ainda não testada na prática.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 1000,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 585,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 172,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 47,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 111.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 66,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_glicose_po",
+        "gramas": 17,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_pistache",
+    "nome": "Pistache",
+    "versao": "V1.0",
+    "perfil": "fam_nuts",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Exemplo. Pasta de pistache travada (é o ingrediente de sabor).",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 1000,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 612,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 74,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 30,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_pasta_pistache",
+        "gramas": 100,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 95.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 87,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_choc70",
+    "nome": "Chocolate 70%",
+    "versao": "V1.0",
+    "perfil": "fam_chocolate",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Exemplo para o Creami. Chocolate e cacau travados.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 278,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 37,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 11,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_choc_70",
+        "gramas": 41,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_cacau_po",
+        "gramas": 11,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 45,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 26,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_sorbet_manga",
+    "nome": "Sorbet de Manga e Limão",
+    "versao": "V1.0",
+    "perfil": "fam_sorbet",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Exemplo. Fruta travada; água e açúcares livres para o Auto-Balance.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 1000,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_polpa_manga",
+        "gramas": 550,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_suco_limao",
+        "gramas": 20,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_agua",
+        "gramas": 198,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 106.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 83,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_inulina",
+        "gramas": 41,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_creami_baunilha",
+    "nome": "Baunilha (pote Creami)",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Exemplo dimensionado para ~450 g (pote padrão). Adicione baunilha a gosto (não altera o balanço).",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 264,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 78,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 21,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 54,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 20,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_glicose_po",
+        "gramas": 12,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_doce_leite",
+    "nome": "Doce de Leite",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Doce de leite travado (sabor). Base pensada para o pote padrão. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 248,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 62,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 4,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_doce_leite",
+        "gramas": 91,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 21,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 23,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_morango_creami",
+    "nome": "Morango com Leite",
+    "versao": "V1.0",
+    "perfil": "fam_frutado_leite",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Polpa de morango travada. Use morango bem maduro; coe se quiser sem sementes. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_polpa_morango",
+        "gramas": 161,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 121,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 66,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 23,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 67,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 11,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_avela_creami",
+    "nome": "Avelã (Gianduia claro)",
+    "versao": "V1.0",
+    "perfil": "fam_nuts",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Pasta de avelã travada. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_pasta_avela",
+        "gramas": 45,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 288,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 22,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 14,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 51,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 29,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_cafe_creami",
+    "nome": "Café",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Espresso frio travado. Para mais intensidade, aumente o café e destrave o leite. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_cafe",
+        "gramas": 60,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 192,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 87,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 28,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 60,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 22,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_sorbet_morango",
+    "nome": "Sorbet de Morango",
+    "versao": "V1.0",
+    "perfil": "fam_sorbet",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Sem lácteos. Polpa e limão travados. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_polpa_morango",
+        "gramas": 280,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_suco_limao",
+        "gramas": 10,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_agua",
+        "gramas": 49,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 85,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 12,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_inulina",
+        "gramas": 13,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_maracuja_ka",
+    "nome": "Maracujá Cremoso",
+    "versao": "V1.0",
+    "perfil": "fam_frutado_leite",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Polpa de maracujá travada. Junte a polpa à base já fria para não talhar. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_polpa_maracuja",
+        "gramas": 220,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 370,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 111,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 33,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 122.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 42,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_coco_ka",
+    "nome": "Coco",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Leite de coco travado; base láctea completa o resto. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_coco",
+        "gramas": 253,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 401,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 21,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 59,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 100.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 64,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_banana_ka",
+    "nome": "Banana",
+    "versao": "V1.0",
+    "perfil": "fam_frutado_leite",
+    "maquina": "mac_kitchenaid_hora",
+    "status": "Exemplo",
+    "notas": "Banana bem madura travada. Feita para comer na hora: bata a banana com a calda fria e leve direto à tigela. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_banana",
+        "gramas": 270,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 348,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 109,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 33,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 120.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 13,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_suco_limao",
+        "gramas": 5,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_choc_branco_ka",
+    "nome": "Chocolate Branco",
+    "versao": "V1.0",
+    "perfil": "fam_branca",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Chocolate branco travado; derreta na calda quente durante a pasteurização. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_choc_branco",
+        "gramas": 100,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 600,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 45,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 21,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 56.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 61,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_glicose_po",
+        "gramas": 15,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_americano_baunilha",
+    "nome": "Baunilha Americana (Philadelphia)",
+    "versao": "V1.0",
+    "perfil": "fam_americano",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Sem ovos, sem cozimento longo. Fava ou extrato de baunilha a gosto. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 284,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 423,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 34,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 83.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 74,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_frances_baunilha",
+    "nome": "Creme de Baunilha com Gemas (francês)",
+    "versao": "V1.0",
+    "perfil": "fam_frances",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Gemas travadas. Cozinhe o creme inglês a 82–84 °C (nappe), resfrie rápido e mature 12 h. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_gema",
+        "gramas": 90,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 259,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 359,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 28,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 85,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 79,
+        "travado": false
+      }
+    ]
+  },
+  {
+    "id": "rec_froyo",
+    "nome": "Frozen Yogurt Natural",
+    "versao": "V1.0",
+    "perfil": "fam_froyo",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Iogurte travado. Misture a frio, sem aquecer, para preservar o fermento e o azedinho. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_iogurte_nat",
+        "gramas": 305,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 19,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 40,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 53,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 20,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_glicose_po",
+        "gramas": 12,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_sherbet_limao",
+    "nome": "Sherbet de Limão",
+    "versao": "V1.0",
+    "perfil": "fam_sherbet",
+    "maquina": "mac_kitchenaid_freezer",
+    "status": "Exemplo",
+    "notas": "Suco de limão travado. Dissolva o açúcar na água, junte o leite gelado e só no fim o limão. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 900,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_suco_limao",
+        "gramas": 160,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_int",
+        "gramas": 387,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_agua",
+        "gramas": 113,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 176.5,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 47,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_inulina",
+        "gramas": 15,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1.5,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_vegano_coco",
+    "nome": "Vegano de Coco e Aveia",
+    "versao": "V1.0",
+    "perfil": "fam_vegano",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Leite de coco travado. Use goma guar (o neutro comercial pode ter derivados de leite: confira o rótulo). Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_coco",
+        "gramas": 182,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_aveia",
+        "gramas": 177,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 50,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_dextrose",
+        "gramas": 33,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_inulina",
+        "gramas": 7,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_proteico_baunilha",
+    "nome": "Proteico de Baunilha",
+    "versao": "V1.0",
+    "perfil": "fam_proteico",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Whey travado. Pouco doce de propósito: complete com sucralose ou stevia a gosto. Bata tudo no liquidificador; se sair em pó no Creami, use Re-spin com 1 colher de leite. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-13",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_leite_desn",
+        "gramas": 343,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_whey_iso",
+        "gramas": 30,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_sacarose",
+        "gramas": 20,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_alulose",
+        "gramas": 29,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 27,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_goma_guar",
+        "gramas": 1,
+        "travado": true
+      }
+    ]
+  },
+  {
+    "id": "rec_vermelhas_banana",
+    "nome": "Mirtilo, Framboesa e Banana (sem açúcar adicionado, sem aditivos)",
+    "versao": "V3.0",
+    "perfil": "fam_proteico",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Só fruta, whey e creme: sem açúcar, alulose ou gomas. A banana bem madura (com pintas) adoça e faz o papel de estabilizante. Mirtilo, framboesa e whey travados. Bata tudo, congele 24 h nivelado e use o programa Lite Ice Cream; conte com um Re-spin. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-19",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_banana",
+        "gramas": 238,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_mirtilo",
+        "gramas": 75,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_framboesa",
+        "gramas": 75,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_whey_iso",
+        "gramas": 40,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 22,
+        "travado": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,483 @@
+{
+  "_sobre": "Constantes do motor, copiadas do app original. Alterar muda os resultados.",
+  "acucares": [
+    {
+      "chave": "sacarose",
+      "rotulo": "Sacarose",
+      "grupo": "acucares",
+      "pod": 1,
+      "pac": 1
+    },
+    {
+      "chave": "glicose",
+      "rotulo": "Glicose / dextrose (anidra)",
+      "grupo": "acucares",
+      "pod": 0.7,
+      "pac": 1.9
+    },
+    {
+      "chave": "frutose",
+      "rotulo": "Frutose",
+      "grupo": "acucares",
+      "pod": 1.7,
+      "pac": 1.9
+    },
+    {
+      "chave": "maltose",
+      "rotulo": "Maltose",
+      "grupo": "acucares",
+      "pod": 0.4,
+      "pac": 1
+    },
+    {
+      "chave": "trealose",
+      "rotulo": "Trealose",
+      "grupo": "acucares",
+      "pod": 0.45,
+      "pac": 1
+    },
+    {
+      "chave": "alulose",
+      "rotulo": "Alulose",
+      "grupo": "acucares",
+      "pod": 0.7,
+      "pac": 1.9
+    },
+    {
+      "chave": "solidos_glicose",
+      "rotulo": "Sólidos de glicose DE 38–42",
+      "grupo": "acucares",
+      "pod": 0.48,
+      "pac": 0.8
+    },
+    {
+      "chave": "maltodextrina",
+      "rotulo": "Maltodextrina DE 18",
+      "grupo": "acucares",
+      "pod": 0.11,
+      "pac": 0.34
+    },
+    {
+      "chave": "eritritol",
+      "rotulo": "Eritritol",
+      "grupo": "outros_solidos",
+      "pod": 0.65,
+      "pac": 2.8
+    },
+    {
+      "chave": "sorbitol",
+      "rotulo": "Sorbitol",
+      "grupo": "outros_solidos",
+      "pod": 0.6,
+      "pac": 1.9
+    },
+    {
+      "chave": "xilitol",
+      "rotulo": "Xilitol",
+      "grupo": "outros_solidos",
+      "pod": 1,
+      "pac": 2.25
+    },
+    {
+      "chave": "maltitol",
+      "rotulo": "Maltitol",
+      "grupo": "outros_solidos",
+      "pod": 0.85,
+      "pac": 0.99
+    },
+    {
+      "chave": "inulina",
+      "rotulo": "Inulina / FOS",
+      "grupo": "outros_solidos",
+      "pod": 0,
+      "pac": 0.1
+    },
+    {
+      "chave": "polidextrose",
+      "rotulo": "Polidextrose",
+      "grupo": "outros_solidos",
+      "pod": 0,
+      "pac": 0.1
+    },
+    {
+      "chave": "acidos_fruta",
+      "rotulo": "Ácidos de fruta (cítrico, málico)",
+      "grupo": "outros_solidos",
+      "pod": 0,
+      "pac": 1.78
+    },
+    {
+      "chave": "acido_latico",
+      "rotulo": "Ácido lático",
+      "grupo": "sng",
+      "pod": 0,
+      "pac": 3.8
+    },
+    {
+      "chave": "sal",
+      "rotulo": "Sal (NaCl)",
+      "grupo": "outros_solidos",
+      "pod": 0,
+      "pac": 10.9
+    },
+    {
+      "chave": "outros_soluveis",
+      "rotulo": "Outros solúveis (café, extratos)",
+      "grupo": "outros_solidos",
+      "pod": 0,
+      "pac": 0.5
+    }
+  ],
+  "lactose": {
+    "pod": 0.16,
+    "pac": 1
+  },
+  "alcool": {
+    "pod": 0,
+    "pac": 7.4
+  },
+  "curva_congelamento": [
+    [
+      0,
+      0
+    ],
+    [
+      3,
+      0.18
+    ],
+    [
+      6,
+      0.35
+    ],
+    [
+      9,
+      0.53
+    ],
+    [
+      12,
+      0.72
+    ],
+    [
+      15,
+      0.9
+    ],
+    [
+      18,
+      1.1
+    ],
+    [
+      21,
+      1.29
+    ],
+    [
+      24,
+      1.47
+    ],
+    [
+      27,
+      1.67
+    ],
+    [
+      30,
+      1.86
+    ],
+    [
+      33,
+      2.03
+    ],
+    [
+      36,
+      2.21
+    ],
+    [
+      39,
+      2.4
+    ],
+    [
+      42,
+      2.6
+    ],
+    [
+      45,
+      2.78
+    ],
+    [
+      48,
+      2.99
+    ],
+    [
+      51,
+      3.2
+    ],
+    [
+      54,
+      3.42
+    ],
+    [
+      57,
+      3.63
+    ],
+    [
+      60,
+      3.85
+    ],
+    [
+      63,
+      4.1
+    ],
+    [
+      66,
+      4.33
+    ],
+    [
+      69,
+      4.54
+    ],
+    [
+      72,
+      4.77
+    ],
+    [
+      75,
+      5
+    ],
+    [
+      78,
+      5.26
+    ],
+    [
+      81,
+      5.53
+    ],
+    [
+      84,
+      5.77
+    ],
+    [
+      87,
+      5.99
+    ],
+    [
+      90,
+      6.23
+    ],
+    [
+      93,
+      6.5
+    ],
+    [
+      96,
+      6.8
+    ],
+    [
+      99,
+      7.04
+    ],
+    [
+      102,
+      7.32
+    ],
+    [
+      105,
+      7.56
+    ],
+    [
+      108,
+      7.8
+    ],
+    [
+      111,
+      8.04
+    ],
+    [
+      114,
+      8.33
+    ],
+    [
+      117,
+      8.62
+    ],
+    [
+      120,
+      8.92
+    ],
+    [
+      123,
+      9.19
+    ],
+    [
+      126,
+      9.45
+    ],
+    [
+      129,
+      9.71
+    ],
+    [
+      132,
+      9.96
+    ],
+    [
+      135,
+      10.22
+    ],
+    [
+      138,
+      10.47
+    ],
+    [
+      141,
+      10.72
+    ],
+    [
+      144,
+      10.97
+    ],
+    [
+      147,
+      11.19
+    ],
+    [
+      150,
+      11.41
+    ],
+    [
+      153,
+      11.63
+    ],
+    [
+      156,
+      11.88
+    ],
+    [
+      159,
+      12.14
+    ],
+    [
+      162,
+      12.4
+    ],
+    [
+      165,
+      12.67
+    ],
+    [
+      168,
+      12.88
+    ],
+    [
+      171,
+      13.08
+    ],
+    [
+      174,
+      13.28
+    ],
+    [
+      177,
+      13.48
+    ],
+    [
+      180,
+      13.68
+    ]
+  ],
+  "metricas": [
+    {
+      "chave": "gordura",
+      "rotulo": "Gordura",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Aumente creme de leite (ou pasta de oleaginosa) no lugar de parte do leite.",
+      "dica_alto": "Troque parte do creme por leite integral ou desnatado."
+    },
+    {
+      "chave": "proteina",
+      "rotulo": "Proteína",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Aumente leite em pó desnatado (ou gema).",
+      "dica_alto": "Reduza leite em pó desnatado."
+    },
+    {
+      "chave": "acucares",
+      "rotulo": "Açúcares (sem lactose)",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Aumente sacarose/dextrose: falta corpo e o gelato endurece.",
+      "dica_alto": "Reduza açúcares e, se faltar sólido, compense com leite em pó ou inulina."
+    },
+    {
+      "chave": "sng",
+      "rotulo": "SNG do leite",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Aumente leite em pó desnatado: mais estrutura e menos água livre.",
+      "dica_alto": "Risco de arenosidade (lactose cristaliza). Reduza leite em pó."
+    },
+    {
+      "chave": "outros_solidos",
+      "rotulo": "Outros sólidos",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Adicione inulina ou um pouco de goma guar/alfarroba (1–2 g/kg).",
+      "dica_alto": "Reduza fibras, cacau ou estabilizantes: a calda fica pesada."
+    },
+    {
+      "chave": "solidos_totais",
+      "rotulo": "Sólidos totais",
+      "unidade": "%",
+      "casas": 1,
+      "dica_baixo": "Muita água: risco de cristais de gelo. Aumente leite em pó, açúcares ou creme.",
+      "dica_alto": "Sólidos demais: textura pastosa. Aumente leite ou água."
+    },
+    {
+      "chave": "pod",
+      "rotulo": "POD (doçura)",
+      "unidade": "pts/kg",
+      "casas": 0,
+      "dica_baixo": "Pouco doce: aumente sacarose (ou troque glicose por sacarose).",
+      "dica_alto": "Doce demais: troque parte da sacarose por glicose em pó (POD 43) ou trealose."
+    },
+    {
+      "chave": "pac",
+      "rotulo": "PAC (maciez)",
+      "unidade": "pts/kg",
+      "casas": 0,
+      "dica_baixo": "Vai ficar duro na temperatura da máquina escolhida: troque parte da sacarose por dextrose.",
+      "dica_alto": "Vai ficar mole/derreter rápido: troque dextrose por sacarose ou glicose."
+    }
+  ],
+  "grupos_perfis": [
+    "Gelato (italiano)",
+    "Sorvetes cremosos",
+    "Frutas",
+    "Especiais",
+    "Meus sabores"
+  ],
+  "substituicoes": {
+    "ing_neutro_5": {
+      "para": "ing_goma_guar",
+      "fator": 0.3,
+      "motivo": "Neutro comercial: composição incerta, pode ter CMC, carragena e mono/diglicerídeos."
+    },
+    "ing_creme_20": {
+      "para": "ing_creme_35",
+      "fator": 0.6,
+      "motivo": "Creme de caixinha: carragena, CMC e fosfatos."
+    },
+    "ing_eritritol": {
+      "para": "ing_alulose",
+      "fator": 1,
+      "motivo": "Eritritol: associado a eventos cardiovasculares e trombose (Nature Medicine, 2023)."
+    },
+    "ing_maltodextrina": {
+      "para": "ing_glicose_po",
+      "fator": 1,
+      "motivo": "Maltodextrina: piora inflamação intestinal em camundongos (CMGH, 2019)."
+    }
+  },
+  "receitas_removidas": [
+    "rec_vermelhas_zero"
+  ]
+}

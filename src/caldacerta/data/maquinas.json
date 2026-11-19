@@ -1,0 +1,58 @@
+[
+  {
+    "id": "mac_kitchenaid_hora",
+    "nome": "KitchenAid — comer na hora",
+    "nome_curto": "KitchenAid · na hora",
+    "ajuste_pac": 0,
+    "temp_servir": -6,
+    "lote_g": 900,
+    "nota_lote": "~900 g de calda (a tigela de 1,9 L não deve passar da metade antes de bater).",
+    "dicas": [
+      "Tigela no freezer por pelo menos 15 h (ideal 24 h), bem gelada.",
+      "Calda maturada na geladeira (4 °C) por 4–12 h; nunca despeje calda morna.",
+      "Ligue a batedeira na velocidade baixa ANTES de despejar a calda; bata ~20–30 min.",
+      "Sai como soft (~−5/−6 °C). Para comer na hora, o PAC importa menos que a textura da batida."
+    ]
+  },
+  {
+    "id": "mac_kitchenaid_freezer",
+    "nome": "KitchenAid — guardar no freezer (−18 °C)",
+    "nome_curto": "KitchenAid · freezer",
+    "ajuste_pac": 40,
+    "temp_servir": -18,
+    "lote_g": 900,
+    "nota_lote": "~900 g de calda por batida.",
+    "dicas": [
+      "Mesmo preparo da batida, depois pote raso no freezer por 2–4 h para firmar.",
+      "O freezer doméstico (−18 °C) é bem mais frio que uma vitrine (−12 °C): por isso a meta de PAC sobe ~40 pontos.",
+      "Se ainda ficar duro, tire do freezer 10 min antes de servir ou troque parte da sacarose por dextrose."
+    ]
+  },
+  {
+    "id": "mac_creami",
+    "nome": "Ninja Creami (pote a −18 °C)",
+    "nome_curto": "Ninja Creami",
+    "ajuste_pac": 0,
+    "temp_servir": -18,
+    "lote_g": 450,
+    "nota_lote": "~450 g no pote padrão (respeite a linha MAX); ~650 g no pote Deluxe.",
+    "dicas": [
+      "Congele o pote nivelado e tampado por 24 h, em freezer a −18 °C ou mais frio.",
+      "A lâmina raspa o bloco e o sorvete sai na textura de servir (~−12/−14 °C), então a meta de PAC é a mesma da vitrine.",
+      "Saiu farinhento? Re-spin; se persistir, 1 colher de sopa de leite e Re-spin. Na próxima, suba um pouco o PAC (troque sacarose por dextrose).",
+      "Saiu mole demais? PAC alto, ou o freezer está acima de −15 °C."
+    ]
+  },
+  {
+    "id": "mac_vitrine",
+    "nome": "Vitrine profissional (−12 °C)",
+    "nome_curto": "Vitrine −12 °C",
+    "ajuste_pac": 0,
+    "temp_servir": -12,
+    "lote_g": 1000,
+    "nota_lote": "Lote de referência de 1 kg.",
+    "dicas": [
+      "Faixas de referência clássicas, para servir em vitrine a −11/−13 °C."
+    ]
+  }
+]

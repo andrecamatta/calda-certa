@@ -1,0 +1,49 @@
+{
+  "id": "rec_fiordilatte",
+  "nome": "Fior di Latte",
+  "versao": "V1.0",
+  "perfil": "fam_branca",
+  "maquina": "mac_kitchenaid_freezer",
+  "status": "Exemplo",
+  "notas": "Receita de exemplo balanceada no app — ainda não testada na prática.",
+  "atualizada_em": "2026-11-13",
+  "lote_g": 1000,
+  "evaporada_g": 0,
+  "itens": [
+    {
+      "ingrediente": "ing_leite_int",
+      "gramas": 585,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_creme_35",
+      "gramas": 172,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_leite_po_desn",
+      "gramas": 47,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_sacarose",
+      "gramas": 111.5,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_dextrose",
+      "gramas": 66,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_glicose_po",
+      "gramas": 17,
+      "travado": false
+    },
+    {
+      "ingrediente": "ing_goma_guar",
+      "gramas": 1.5,
+      "travado": true
+    }
+  ]
+}
