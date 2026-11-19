@@ -28,11 +28,14 @@ def normalizar(r: Mapping[str, Any]) -> dict:
     itens_brutos = r.get("itens", r.get("items")) or []
     itens = []
     for i in itens_brutos:
-        itens.append({
+        item = {
             "ingrediente": i.get("ingrediente", i.get("ingredientId")),
             "gramas": i.get("gramas", i.get("grams", 0)),
             "travado": bool(i.get("travado", i.get("locked", False))),
-        })
+        }
+        if i.get("brix") is not None:  # novidade: Brix medido (só quando informado)
+            item["brix"] = numero(i["brix"])
+        itens.append(item)
     out = {
         "id": r.get("id"),
         "nome": r.get("nome", r.get("name")) or "Receita Sem Nome",
@@ -46,6 +49,11 @@ def normalizar(r: Mapping[str, Any]) -> dict:
         "evaporada_g": numero(r.get("evaporada_g", r.get("evaporation", 0))),
         "itens": itens,
     }
+    processo = r.get("processo")
+    if processo is not None:  # novidade: "frio" | "quente"
+        if processo not in ("frio", "quente"):
+            raise ValueError(f"processo inválido: {processo!r} (use 'frio' ou 'quente')")
+        out["processo"] = processo
     if out["lote_g"] is None:
         soma = 0
         for i in itens:
@@ -82,12 +90,12 @@ def carregar(arg: str) -> tuple[dict, list[str]]:
                 raise FileNotFoundError(f"arquivo de receita não encontrado: {arg}")
             bruto = json.loads(p.read_text(encoding="utf-8"))
         else:
-            bruto = dados.achar(dados.receitas(), arg, "receita")
+            bruto = dados.achar_com_extras(dados.receitas(), dados.receitas_extra(), arg, "receita")
     if isinstance(bruto, list):
         raise ValueError("o arquivo deve conter UMA receita (objeto JSON), não uma lista")
     r = normalizar(bruto)
     avisos = aplicar_substituicoes(r)
-    ings = dados.mapa_ingredientes()
+    ings = dados.mapa_ingredientes_todos()
     for i in r["itens"]:
         if i["ingrediente"] not in ings:
             avisos.append(f"ingrediente fora do banco: {i['ingrediente']} (conta só no peso)")
@@ -107,7 +115,7 @@ def resolver_perfil(receita: Mapping, perfil: str | None) -> dict:
     chave = perfil or receita.get("perfil")
     if not chave:
         return lista[0]  # como o app: r.find(...) || r[0]
-    return dados.achar(lista, chave, "perfil")
+    return dados.achar_com_extras(lista, dados.perfis_extra(), chave, "perfil")
 
 
 def para_arquivo(r: Mapping) -> dict:
@@ -117,5 +125,15 @@ def para_arquivo(r: Mapping) -> dict:
     for k in ("lote_g", "evaporada_g"):
         if isinstance(out.get(k), float) and out[k].is_integer():
             out[k] = int(out[k])
-    out["itens"] = [{"ingrediente": i["ingrediente"], "gramas": i["gramas"], "travado": bool(i.get("travado"))} for i in r["itens"]]
+    if r.get("processo") is not None:
+        out["processo"] = r["processo"]
+    out["itens"] = [_item_arquivo(i) for i in r["itens"]]
+    return out
+
+
+def _item_arquivo(i: Mapping) -> dict:
+    out = {"ingrediente": i["ingrediente"], "gramas": i["gramas"], "travado": bool(i.get("travado"))}
+    if i.get("brix") is not None:
+        b = i["brix"]
+        out["brix"] = int(b) if isinstance(b, float) and b.is_integer() else b
     return out

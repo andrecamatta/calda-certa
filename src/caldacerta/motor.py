@@ -418,12 +418,17 @@ def balancear(
     ingredientes: Mapping[str, Ingrediente],
     faixas: Faixas,
     evaporada: float = 0,
+    funcao_objetivo=None,
 ) -> dict:
     """Auto-balanceamento (``Fc``): busca local que transfere massa entre pares
     de ingredientes destravados (passos de 5%, 2%, 0,8%, 0,2% da massa e 0,5 g),
     minimizando a distância ao centro das faixas e penalizando fortemente o
     que sai delas. Ingredientes travados (``travado``) não mudam e a massa
-    total é preservada (arredondada a 0,1 g)."""
+    total é preservada (arredondada a 0,1 g).
+
+    ``funcao_objetivo`` (novidade, opcional): função ``gramas -> custo`` que
+    substitui o objetivo original (ex.: ``nutricao.objetivo_light``). Sem ela,
+    o comportamento é exatamente o do app."""
     itens = list(itens)
     r = [i for i, m in enumerate(itens) if not m.get("travado") and ingredientes.get(m.get("ingrediente"))]
     if len(r) < 2:
@@ -434,7 +439,7 @@ def balancear(
     if massa <= 0:
         return {"sucesso": False, "mensagem": MSG_MASSA_ZERO, "itens": itens}
     u = [max(0, numero(m.get("gramas"))) for m in itens]
-    d = _preparar_objetivo(itens, ingredientes, faixas, evaporada)
+    d = funcao_objetivo if funcao_objetivo is not None else _preparar_objetivo(itens, ingredientes, faixas, evaporada)
     inicial = d(u)
     x = inicial
     for passo in (massa * 0.05, massa * 0.02, massa * 0.008, massa * 0.002, 0.5):
