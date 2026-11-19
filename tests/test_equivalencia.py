@@ -65,7 +65,7 @@ def traduz_faixas(ct):
 
 def test_contagens_dos_dados():
     assert len(ING) == 45
-    assert len(dados.receitas()) == 22
+    assert len(dados.receitas()) == 23
     assert len(MAQ) == 4
     assert len(PERF) == 11
 

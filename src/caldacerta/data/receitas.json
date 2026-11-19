@@ -1,5 +1,49 @@
 [
   {
+    "id": "rec_vermelhas_whey_menos_doce",
+    "nome": "Frutas Vermelhas e Banana com Whey, menos doce (sem açúcar adicionado)",
+    "versao": "V1.0",
+    "perfil": "fam_proteico",
+    "maquina": "mac_creami",
+    "status": "Em Teste",
+    "notas": "Versão menos doce da rec_vermelhas_whey: banana 120 g (em vez de 220), mais framboesa e mirtilo, leite em pó desnatado para manter a maciez (PAC) sem adoçar. Sem açúcar, adoçantes ou gomas. Bata tudo, congele 24 h nivelado e use o programa Lite Ice Cream; conte com um Re-spin. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-19",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_banana",
+        "gramas": 120.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_mirtilo",
+        "gramas": 112.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_framboesa",
+        "gramas": 157.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_whey_iso",
+        "gramas": 28.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_leite_po_desn",
+        "gramas": 25.0,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 8.0,
+        "travado": false
+      }
+    ]
+  },
+  {
     "id": "rec_vermelhas_whey",
     "nome": "Frutas Vermelhas e Banana com Whey (sem açúcar adicionado)",
     "versao": "V1.0",
