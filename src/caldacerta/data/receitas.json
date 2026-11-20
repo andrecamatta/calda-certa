@@ -1095,5 +1095,49 @@
         "travado": false
       }
     ]
+  },
+  {
+    "id": "rec_vermelhas_whey_sem_po",
+    "nome": "Frutas Vermelhas e Banana com Whey, sem leite em pó (sem açúcar adicionado)",
+    "versao": "V1.0",
+    "perfil": "fam_proteico",
+    "maquina": "mac_creami",
+    "status": "Exemplo",
+    "notas": "Versão da rec_vermelhas_whey_menos_doce sem leite em pó: o destilado 40% (5 g, 1 colher de chá) substitui o leite em pó para o PAC (maciez), sem adoçar; o whey sobe para 45 g. Sem açúcar, adoçantes ou gomas. Bata tudo, congele 24 h nivelado e use o modo Lite Ice Cream; faça um Re-spin com 1 colher de leite. Balanceada no app, ainda não testada.",
+    "atualizada_em": "2026-11-20",
+    "lote_g": 450,
+    "evaporada_g": 0,
+    "itens": [
+      {
+        "ingrediente": "ing_banana",
+        "gramas": 120.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_mirtilo",
+        "gramas": 112.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_framboesa",
+        "gramas": 160.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_whey_iso",
+        "gramas": 45.0,
+        "travado": true
+      },
+      {
+        "ingrediente": "ing_creme_35",
+        "gramas": 8.0,
+        "travado": false
+      },
+      {
+        "ingrediente": "ing_destilado_40",
+        "gramas": 5.0,
+        "travado": true
+      }
+    ]
   }
 ]

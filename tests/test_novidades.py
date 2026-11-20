@@ -50,7 +50,7 @@ def gravar(tmp_path, r, nome="r.json"):
 
 # ------------------------------------------------------------------ dados
 def test_banco_complementar_separado():
-    assert len(dados.ingredientes()) == 45 and len(dados.perfis()) == 11 and len(dados.receitas()) == 23
+    assert len(dados.ingredientes()) == 45 and len(dados.perfis()) == 11 and len(dados.receitas()) == 24
     assert len(dados.ingredientes_todos()) == 45 + len(dados.ingredientes_extra())
     assert "fam_creami_fit" in PERF
     assert {r["id"] for r in dados.receitas_extra()} == {"rec_creami_frosty_amendoas", "rec_creami_frosty_agua"}
@@ -427,7 +427,7 @@ def test_pagina_tem_novidades(capsys, tmp_path):
 def test_listas_todos(capsys):
     assert len(rodar_json(capsys, "ingredientes")) == 45
     assert len(rodar_json(capsys, "ingredientes", "--todos")) == 45 + len(dados.ingredientes_extra())
-    assert len(rodar_json(capsys, "receitas", "--todos")) == 25
+    assert len(rodar_json(capsys, "receitas", "--todos")) == 26
     assert len(rodar_json(capsys, "perfis", "--todos")) == 12
     _, out, _ = rodar(capsys, "ingredientes")
     assert "use --todos" in out
