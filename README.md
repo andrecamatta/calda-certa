@@ -472,12 +472,30 @@ O mapeamento completo (incluindo as chaves do perfil de açúcares) está em
 - Não portado: estado no `localStorage`, duplicar versão (V1 → V2) e edição
   de perfis pela interface (edite `perfis.json`).
 
+## Interface Web (GitHub Pages)
+
+A pasta `web/` contém uma interface web interativa estática (HTML/CSS/ES modules,
+sem dependências de build) que roda o mesmo motor (`web/engine.js`) e os mesmos
+dados (`web/data/bundle.json`, gerado a partir de `src/caldacerta/data/` via
+`python3 tools/sync_web_data.py`), com persistência local em `localStorage`.
+
+Para testar localmente:
+
+```sh
+python3 tools/sync_web_data.py
+python3 -m http.server --directory web 8080
+```
+
+O workflow `.github/workflows/pages.yml` sincroniza o `bundle.json` e publica
+`web/` automaticamente no **GitHub Pages** a cada push em `main`.
+
 ## Estrutura
 
 ```
 src/caldacerta/       motor, dados, CLI, ficha, página
 src/caldacerta/data/  arquivos de dados (JSON)
-tools/                extração e harness em node (fonte: tools/referencia/motor_original.js)
-tests/                testes (equivalência + unidade + CLI) e fixtures
+web/                  interface web interativa (GitHub Pages)
+tools/                extração, harness em node e sync_web_data.py
+tests/                testes (equivalência + unidade + CLI + motor JS) e fixtures
 exemplos/             arquivo de receita de exemplo
 ```
