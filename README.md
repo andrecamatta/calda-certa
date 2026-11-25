@@ -474,6 +474,8 @@ O mapeamento completo (incluindo as chaves do perfil de açúcares) está em
 
 ## Interface Web (GitHub Pages)
 
+Disponível online em: **https://andrecamatta.github.io/calda-certa/**
+
 A pasta `web/` contém uma interface web interativa estática (HTML/CSS/ES modules,
 sem dependências de build) que roda o mesmo motor (`web/engine.js`) e os mesmos
 dados (`web/data/bundle.json`, gerado a partir de `src/caldacerta/data/` via
