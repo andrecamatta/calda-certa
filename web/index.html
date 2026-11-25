@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calda Certa — Balanceamento de Sorvetes, Gelatos e Sorbets</title>
+  <meta name="description" content="Bancada interativa de balanceamento técnico para gelatos, sorvetes, sorbets e receitas Ninja CREAMi: POD, PAC, curva de congelamento, auto-balanceamento, calorias e fichas técnicas.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23b5511d'/%3E%3Cpath d='M16 6c-4.4 0-8 3.3-8 7.5 0 1.4.4 2.7 1.1 3.8L16 26l6.9-8.7c.7-1.1 1.1-2.4 1.1-3.8C24 9.3 20.4 6 16 6zm0 4a3.5 3.5 0 110 7 3.5 3.5 0 010-7z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#bancada" id="brand-home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0-6 6c0 1.4.5 2.7 1.3 3.7L12 21l4.7-8.3A6 6 0 0 0 12 3Z"/>
+            <circle cx="12" cy="9" r="2"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">Calda Certa</span>
+          <span class="brand-sub">Bancada de Balanceamento</span>
+        </span>
+      </a>
+
+      <nav class="nav-tabs" aria-label="Navegação principal">
+        <button type="button" class="nav-tab active" data-view="bancada" id="tab-bancada">
+          Bancada
+        </button>
+        <button type="button" class="nav-tab" data-view="receitas" id="tab-receitas">
+          Receitas <span class="count-pill" id="count-receitas">—</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="ingredientes" id="tab-ingredientes">
+          Ingredientes <span class="count-pill" id="count-ingredientes">—</span>
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-sm" id="btn-importar-json" title="Importar receita JSON">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Importar
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" id="btn-abrir-ficha">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Ficha
+        </button>
+        <button type="button" class="btn btn-icon" id="btn-theme" title="Alternar tema claro/escuro" aria-label="Alternar tema claro ou escuro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="icon-theme"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- ================================================================
+         VIEW 1: BANCADA (WORKBENCH)
+         ================================================================ -->
+    <section class="view active" id="view-bancada" aria-label="Bancada de formulação">
+      <div class="workbench-grid">
+        <!-- Left column: Recipe Editor -->
+        <div class="col-stack">
+          <div class="card">
+            <div class="recipe-head">
+              <div class="recipe-title-wrap">
+                <div class="recipe-title-row">
+                  <h1 style="margin:0;flex:1;min-width:0;font-size:inherit;font-weight:inherit;">
+                    <input type="text" class="recipe-title-input" id="rec-nome" aria-label="Nome da receita" placeholder="Nome da receita">
+                  </h1>
+                  <input type="text" class="version-input" id="rec-versao" aria-label="Versão da receita" placeholder="V1.0">
+                </div>
+                <textarea rows="1" class="recipe-notes-input" id="rec-notas" aria-label="Notas da receita" placeholder="Adicionar notas de preparo ou observações..."></textarea>
+              </div>
+              <div class="recipe-actions">
+                <button type="button" class="btn btn-sm btn-soft" id="btn-salvar-receita" title="Salvar na biblioteca local">Salvar</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-nova-receita" title="Começar receita em branco">Nova</button>
+              </div>
+            </div>
+
+            <div class="context-grid">
+              <div>
+                <label class="field-label" for="sel-perfil">Perfil / Estilo</label>
+                <select class="select" id="sel-perfil"></select>
+              </div>
+              <div>
+                <label class="field-label" for="sel-maquina">Máquina</label>
+                <select class="select" id="sel-maquina"></select>
+              </div>
+            </div>
+
+            <div class="context-grid-sub">
+              <div>
+                <label class="field-label" for="sel-processo">Processo</label>
+                <select class="select" id="sel-processo">
+                  <option value="">Não informado</option>
+                  <option value="frio">A frio (sem aquecer)</option>
+                  <option value="quente">A quente (~80–85 °C)</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="inp-evaporada">Água evaporada (g)</label>
+                <input type="number" step="1" min="0" class="input input-num" id="inp-evaporada" value="0">
+              </div>
+              <div>
+                <label class="field-label" for="inp-peso-alvo">Peso alvo / escala (g)</label>
+                <div style="display:flex;gap:4px;">
+                  <input type="number" step="10" min="1" class="input input-num" id="inp-peso-alvo" placeholder="1000">
+                  <button type="button" class="btn btn-sm" id="btn-escalonar" title="Escalonar receita para este peso">Ir</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="pote-selector-wrap"></div>
+          </div>
+
+          <!-- Formulation Table Card -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Fórmula</h2>
+                <p class="card-sub" id="formula-subtitle">Trave ingredientes fixos antes de auto-balancear.</p>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-desfazer" disabled title="Desfazer última alteração">
+                  Desfazer
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-destravar-todos" title="Destravar todos os ingredientes">
+                  Destravar todos
+                </button>
+              </div>
+            </div>
+
+            <div class="formula-table-wrap">
+              <table class="formula-table">
+                <thead>
+                  <tr>
+                    <th>Ingrediente</th>
+                    <th>Gramas</th>
+                    <th>%</th>
+                    <th class="hide-sm">R$</th>
+                    <th title="Travar ingrediente no balanceamento">Trava</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="formula-tbody"></tbody>
+                <tfoot id="formula-tfoot"></tfoot>
+              </table>
+            </div>
+
+            <!-- Add Ingredient Combobox -->
+            <div class="add-ing-wrap">
+              <div class="add-ing-row">
+                <div class="add-ing-input-wrap">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="input add-ing-input" id="inp-add-ing" placeholder="Adicionar ingrediente (ex.: leite, alulose, goma guar, pistache...)" autocomplete="off">
+                  <div class="combobox-menu" id="add-ing-menu" role="listbox"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="action-bar">
+              <button type="button" class="btn btn-ok" id="btn-balancear">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M3 16l3-8 3 8a4 4 0 0 1-6 0z"/><path d="M15 16l3-8 3 8a4 4 0 0 1-6 0z"/></svg>
+                Auto-Balancear
+              </button>
+              <button type="button" class="btn" id="btn-toggle-light">
+                Balancear Light
+              </button>
+              <button type="button" class="btn btn-soft btn-sm" id="btn-escala-maquina">
+                Lote da máquina
+              </button>
+              <button type="button" class="btn btn-soft btn-sm" id="btn-escala-pote" style="display:none;">
+                Encher pote
+              </button>
+            </div>
+
+            <!-- Light Balancing Options Drawer -->
+            <div class="sub-drawer" id="drawer-light">
+              <div class="drawer-row">
+                <div style="width:140px;">
+                  <label class="field-label" for="inp-light-prot">Proteína mín. (%)</label>
+                  <input type="number" step="0.5" min="0" max="30" class="input input-num" id="inp-light-prot" placeholder="opcional">
+                </div>
+                <div style="flex:1;min-width:180px;">
+                  <span class="field-label">Incluir extras (0 g, destravados)</span>
+                  <div class="chip-list" id="light-include-chips"></div>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-executar-light">
+                  Otimizar Light
+                </button>
+              </div>
+              <p class="card-sub" style="margin-top:8px;">
+                Mantém as faixas verdes com prioridade, reduz kcal/100 g e respeita o teto de eritritol (1/3 da IDA da EFSA por porção).
+              </p>
+            </div>
+          </div>
+
+          <!-- Machine Tips & Process Reminders -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Máquina e Preparo</h2>
+                <p class="card-sub" id="maquina-nota-sub"></p>
+              </div>
+            </div>
+            <div id="maquina-dicas-wrap"></div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+              <span class="field-label" style="margin-bottom:8px;">Lembretes de processo</span>
+              <ul class="checklist" id="lembretes-list"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Live Analysis Lab -->
+        <div class="col-stack">
+          <!-- Score & Thermal KPIs -->
+          <div class="card score-hero" id="score-hero"></div>
+
+          <!-- Alerts & Sandiness -->
+          <div class="alert-stack" id="alerts-wrap"></div>
+
+          <!-- 8 Balance Metrics -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Parâmetros de Balanceamento</h2>
+                <p class="card-sub" id="balance-subtitle"></p>
+              </div>
+              <span class="badge" id="pac-offset-badge"></span>
+            </div>
+            <div class="metrics-list" id="metrics-list"></div>
+          </div>
+
+          <!-- One-Ingredient Quick Fixes -->
+          <div class="card" id="card-correcoes" style="display:none;">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Correções de um ingrediente</h2>
+                <p class="card-sub">Alternativas de primeira ordem que melhoram métricas fora da faixa sem piorar o saldo.</p>
+              </div>
+            </div>
+            <div class="fix-list" id="correcoes-list"></div>
+          </div>
+
+          <!-- Freezing Curve SVG -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Curva de Congelamento</h2>
+                <p class="card-sub">Fração da água livre congelada em função da temperatura.</p>
+              </div>
+              <span class="mono" style="font-size:0.78rem;color:var(--ink-secondary);" id="curve-readout"></span>
+            </div>
+            <div class="curve-wrap" id="curve-wrap"></div>
+          </div>
+
+          <!-- Nutrition & Pote -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Nutrição (estimativa)</h2>
+                <p class="card-sub">Fatores de Atwater com polióis, fibras e alulose (excluída dos açúcares).</p>
+              </div>
+              <div class="nutri-controls">
+                <label class="nutri-mini-field">
+                  Porção
+                  <input type="number" min="10" max="2000" step="10" class="input input-num" id="inp-porcao-g" value="100"> g
+                </label>
+                <label class="nutri-mini-field" title="Peso corporal para cálculo de 1/3 da IDA da EFSA para eritritol">
+                  Peso
+                  <input type="number" min="20" max="200" step="5" class="input input-num" id="inp-peso-kg" value="70"> kg
+                </label>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="nutri-table" id="nutri-table"></table>
+            </div>
+            <div id="nutri-extra-wrap" style="margin-top:10px;font-size:0.8rem;color:var(--ink-secondary);"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         VIEW 2: RECEITAS (LIBRARY)
+         ================================================================ -->
+    <section class="view" id="view-receitas" aria-label="Biblioteca de receitas">
+      <div class="toolbar-row">
+        <div class="search-group">
+          <input type="search" class="input" id="rec-busca" placeholder="Buscar receita por nome ou ingrediente...">
+          <select class="select" id="rec-filtro-perfil">
+            <option value="">Todos os perfis</option>
+          </select>
+          <select class="select" id="rec-filtro-origem">
+            <option value="">Todas as origens</option>
+            <option value="usuario">Minhas receitas salvas</option>
+            <option value="base">Banco clássico</option>
+            <option value="novidade">Banco complementar (fit / Creami)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-nova-receita-lib">+ Nova receita</button>
+      </div>
+      <div class="recipes-grid" id="recipes-grid"></div>
+    </section>
+
+    <!-- ================================================================
+         VIEW 3: INGREDIENTES (DATABASE)
+         ================================================================ -->
+    <section class="view" id="view-ingredientes" aria-label="Banco de ingredientes">
+      <div class="toolbar-row">
+        <div class="search-group">
+          <input type="search" class="input" id="ing-busca" placeholder="Buscar ingrediente...">
+          <select class="select" id="ing-filtro-cat">
+            <option value="">Todas as categorias</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-novo-ingrediente">+ Novo ingrediente</button>
+      </div>
+      <div class="db-table-wrap">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Ingrediente</th>
+              <th>Água</th>
+              <th>Gord.</th>
+              <th>Prot.</th>
+              <th>Açúc.</th>
+              <th>SNLG</th>
+              <th>Outros</th>
+              <th>POD</th>
+              <th>PAC</th>
+              <th>kcal</th>
+              <th>R$/kg</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="ing-db-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       MODAL: FICHA TÉCNICA & EXPORTAR
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-ficha" role="dialog" aria-modal="true" aria-labelledby="modal-ficha-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-ficha-title">Ficha Técnica e Exportação</h2>
+        <button type="button" class="btn btn-icon btn-ghost" data-close-modal="modal-ficha" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="nav-tabs" style="margin-bottom:12px;">
+          <button type="button" class="nav-tab active" data-ficha-tab="md">Markdown</button>
+          <button type="button" class="nav-tab" data-ficha-tab="texto">Texto (app)</button>
+          <button type="button" class="nav-tab" data-ficha-tab="json">JSON</button>
+        </div>
+        <textarea class="code-preview" id="ficha-preview" readonly></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" id="btn-baixar-html">Baixar HTML</button>
+        <button type="button" class="btn" id="btn-baixar-ficha">Baixar arquivo</button>
+        <button type="button" class="btn btn-primary" id="btn-copiar-ficha">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: INGREDIENTE CUSTOMIZADO (CRIAR / EDITAR)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-ing" role="dialog" aria-modal="true" aria-labelledby="modal-ing-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-ing-title">Novo Ingrediente</h2>
+        <button type="button" class="btn btn-icon btn-ghost" data-close-modal="modal-ing" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-ing">
+          <input type="hidden" id="f-ing-id">
+          <div class="form-grid-2" style="margin-bottom:12px;">
+            <div>
+              <label class="field-label" for="f-ing-nome">Nome</label>
+              <input type="text" class="input" id="f-ing-nome" required placeholder="Ex.: Xarope de Bordo">
+            </div>
+            <div>
+              <label class="field-label" for="f-ing-cat">Categoria</label>
+              <input type="text" class="input" id="f-ing-cat" list="cat-datalist" required placeholder="Ex.: Açúcares">
+              <datalist id="cat-datalist"></datalist>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span class="field-label" style="margin:0;">Composição (g por 100 g)</span>
+            <span class="mono" style="font-size:0.8rem;" id="f-ing-soma">Soma: 100,0%</span>
+          </div>
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div><label class="field-label" for="f-ing-agua">Água %</label><input type="number" step="0.1" class="input input-num" id="f-ing-agua" value="0"></div>
+            <div><label class="field-label" for="f-ing-gordura">Gordura %</label><input type="number" step="0.1" class="input input-num" id="f-ing-gordura" value="0"></div>
+            <div><label class="field-label" for="f-ing-proteina">Proteína %</label><input type="number" step="0.1" class="input input-num" id="f-ing-proteina" value="0"></div>
+            <div><label class="field-label" for="f-ing-acucares">Açúcares %</label><input type="number" step="0.1" class="input input-num" id="f-ing-acucares" value="0"></div>
+            <div><label class="field-label" for="f-ing-sng">SNLG %</label><input type="number" step="0.1" class="input input-num" id="f-ing-sng" value="0"></div>
+            <div><label class="field-label" for="f-ing-lactose">Lactose %</label><input type="number" step="0.1" class="input input-num" id="f-ing-lactose" value="0"></div>
+            <div><label class="field-label" for="f-ing-outros">Outros sólidos %</label><input type="number" step="0.1" class="input input-num" id="f-ing-outros" value="0"></div>
+            <div><label class="field-label" for="f-ing-alcool">Álcool %</label><input type="number" step="0.1" class="input input-num" id="f-ing-alcool" value="0"></div>
+            <div><label class="field-label" for="f-ing-custo">Custo (R$/kg)</label><input type="number" step="0.5" class="input input-num" id="f-ing-custo" value="0"></div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:6px;padding-top:18px;">
+              <input type="checkbox" id="f-ing-auto" checked>
+              <label for="f-ing-auto" style="font-size:0.84rem;font-weight:600;">POD/PAC automáticos</label>
+            </div>
+            <div><label class="field-label" for="f-ing-pod">POD (pts/100g)</label><input type="number" step="0.1" class="input input-num" id="f-ing-pod" value="0"></div>
+            <div><label class="field-label" for="f-ing-pac">PAC (pts/100g)</label><input type="number" step="0.1" class="input input-num" id="f-ing-pac" value="0"></div>
+          </div>
+
+          <details style="margin-bottom:12px;">
+            <summary style="cursor:pointer;font-size:0.82rem;font-weight:700;color:var(--ink-secondary);margin-bottom:8px;">
+              Perfil de açúcares, polióis e extras (para POD/PAC e kcal automáticos)
+            </summary>
+            <div class="form-grid" id="f-ing-perfil-grid"></div>
+            <div class="form-grid" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+              <div><label class="field-label" for="f-ing-fibra">Fibra %</label><input type="number" step="0.1" class="input input-num" id="f-ing-fibra" placeholder="opcional"></div>
+              <div><label class="field-label" for="f-ing-kcal">kcal/100g (manual)</label><input type="number" step="1" class="input input-num" id="f-ing-kcal" placeholder="automático"></div>
+              <div><label class="field-label" for="f-ing-dmax">Dose máx. %</label><input type="number" step="0.05" class="input input-num" id="f-ing-dmax" placeholder="opcional"></div>
+            </div>
+          </details>
+
+          <div class="alert-stack" id="f-ing-avisos"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="btn-excluir-ing" style="margin-right:auto;display:none;">Excluir</button>
+        <button type="button" class="btn" data-close-modal="modal-ing">Cancelar</button>
+        <button type="submit" form="form-ing" class="btn btn-primary">Salvar ingrediente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden file input for JSON import -->
+  <input type="file" id="file-import-json" accept=".json,application/json" style="display:none;">
+
+  <!-- Toast feedback -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
