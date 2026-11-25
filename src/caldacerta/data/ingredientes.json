@@ -13,7 +13,7 @@
     "alcool": 0,
     "pod": 0.8,
     "pac": 4.8,
-    "custo_kg": 5.2,
+    "custo_kg": 5.6,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -31,7 +31,7 @@
     "alcool": 0,
     "pod": 0.8,
     "pac": 5,
-    "custo_kg": 4.8,
+    "custo_kg": 5.5,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -49,7 +49,7 @@
     "alcool": 0,
     "pod": 0.5,
     "pac": 3.1,
-    "custo_kg": 34,
+    "custo_kg": 68,
     "pod_pac_auto": true,
     "perfil_acucares": {},
     "nota": "Use creme de leite FRESCO sem espessantes. Os de caixinha costumam ter carragena e CMC."
@@ -68,7 +68,7 @@
     "alcool": 0,
     "pod": 8.2,
     "pac": 51.5,
-    "custo_kg": 38,
+    "custo_kg": 55,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -86,7 +86,7 @@
     "alcool": 0,
     "pod": 6.1,
     "pac": 38,
-    "custo_kg": 36,
+    "custo_kg": 50,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -104,7 +104,7 @@
     "alcool": 0,
     "pod": 0.6,
     "pac": 3.5,
-    "custo_kg": 68,
+    "custo_kg": 115,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -122,7 +122,7 @@
     "alcool": 0,
     "pod": 0.6,
     "pac": 5.1,
-    "custo_kg": 14,
+    "custo_kg": 22,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "acido_latico": 0.3
@@ -142,7 +142,7 @@
     "alcool": 0,
     "pod": 46.8,
     "pac": 56,
-    "custo_kg": 16.5,
+    "custo_kg": 21,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 45
@@ -162,7 +162,7 @@
     "alcool": 0,
     "pod": 100,
     "pac": 100,
-    "custo_kg": 4.9,
+    "custo_kg": 5.5,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 100
@@ -182,7 +182,7 @@
     "alcool": 0,
     "pod": 63.7,
     "pac": 172.9,
-    "custo_kg": 18,
+    "custo_kg": 28,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "glicose": 91
@@ -202,7 +202,7 @@
     "alcool": 0,
     "pod": 45.6,
     "pac": 76,
-    "custo_kg": 22,
+    "custo_kg": 32,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "solidos_glicose": 95
@@ -222,7 +222,7 @@
     "alcool": 0,
     "pod": 38.4,
     "pac": 64,
-    "custo_kg": 15,
+    "custo_kg": 24,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "solidos_glicose": 80
@@ -242,7 +242,7 @@
     "alcool": 0,
     "pod": 96,
     "pac": 152,
-    "custo_kg": 28,
+    "custo_kg": 32,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "glicose": 40,
@@ -263,7 +263,7 @@
     "alcool": 0,
     "pod": 93.9,
     "pac": 145.4,
-    "custo_kg": 45,
+    "custo_kg": 65,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "frutose": 39,
@@ -287,7 +287,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 0,
-    "custo_kg": 145,
+    "custo_kg": 85,
     "pod_pac_auto": true,
     "perfil_acucares": {},
     "nota": "Fibra de semente. Use pura (sem mistura comercial), 1–2 g por kg."
@@ -306,7 +306,7 @@
     "alcool": 0,
     "pod": 10.5,
     "pac": 21.3,
-    "custo_kg": 52,
+    "custo_kg": 90,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "frutose": 4,
@@ -330,7 +330,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 9.6,
-    "custo_kg": 48,
+    "custo_kg": 65,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "polidextrose": 96
@@ -369,7 +369,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 0,
-    "custo_kg": 32,
+    "custo_kg": 42,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -387,7 +387,7 @@
     "alcool": 0,
     "pod": 0.1,
     "pac": 0.6,
-    "custo_kg": 44,
+    "custo_kg": 62,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -405,7 +405,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 0,
-    "custo_kg": 39,
+    "custo_kg": 55,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -423,7 +423,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 0,
-    "custo_kg": 58,
+    "custo_kg": 95,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
@@ -441,7 +441,7 @@
     "alcool": 0,
     "pod": 28,
     "pac": 28,
-    "custo_kg": 89,
+    "custo_kg": 160,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 28
@@ -461,7 +461,7 @@
     "alcool": 0,
     "pod": 45,
     "pac": 45,
-    "custo_kg": 78,
+    "custo_kg": 140,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 45
@@ -481,7 +481,7 @@
     "alcool": 0,
     "pod": 45.3,
     "pac": 52,
-    "custo_kg": 74,
+    "custo_kg": 115,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 44
@@ -501,7 +501,7 @@
     "alcool": 0,
     "pod": 44.6,
     "pac": 53,
-    "custo_kg": 82,
+    "custo_kg": 105,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 43
@@ -521,7 +521,7 @@
     "alcool": 0,
     "pod": 7,
     "pac": 7,
-    "custo_kg": 245,
+    "custo_kg": 340,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 7
@@ -541,7 +541,7 @@
     "alcool": 0,
     "pod": 4.5,
     "pac": 4.5,
-    "custo_kg": 135,
+    "custo_kg": 195,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 4.5
@@ -561,7 +561,7 @@
     "alcool": 0,
     "pod": 5,
     "pac": 5,
-    "custo_kg": 29,
+    "custo_kg": 36,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 5
@@ -581,7 +581,7 @@
     "alcool": 0,
     "pod": 16.7,
     "pac": 20.8,
-    "custo_kg": 14.5,
+    "custo_kg": 22,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 7,
@@ -604,7 +604,7 @@
     "alcool": 0,
     "pod": 7.1,
     "pac": 12,
-    "custo_kg": 18,
+    "custo_kg": 25,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "frutose": 2.6,
@@ -627,7 +627,7 @@
     "alcool": 0,
     "pod": 1.7,
     "pac": 11.5,
-    "custo_kg": 9,
+    "custo_kg": 12,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "glicose": 0.6,
@@ -650,7 +650,7 @@
     "alcool": 0,
     "pod": 11.4,
     "pac": 21.6,
-    "custo_kg": 24,
+    "custo_kg": 32,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 3,
@@ -673,7 +673,7 @@
     "alcool": 0,
     "pod": 17,
     "pac": 24.9,
-    "custo_kg": 7.5,
+    "custo_kg": 9.5,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 5,
@@ -696,7 +696,7 @@
     "alcool": 0,
     "pod": 43.8,
     "pac": 53,
-    "custo_kg": 30,
+    "custo_kg": 38,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 42
@@ -716,7 +716,7 @@
     "alcool": 0,
     "pod": 2,
     "pac": 2,
-    "custo_kg": 22,
+    "custo_kg": 28,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sacarose": 2
@@ -737,7 +737,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 0.8,
-    "custo_kg": 60,
+    "custo_kg": 90,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "outros_soluveis": 1.5
@@ -757,7 +757,7 @@
     "alcool": 0,
     "pod": 0.2,
     "pac": 1,
-    "custo_kg": 180,
+    "custo_kg": 260,
     "pod_pac_auto": true,
     "perfil_acucares": {},
     "nota": "Prefira whey sem sabor e sem adoçantes ou espessantes."
@@ -776,7 +776,7 @@
     "alcool": 0,
     "pod": 70,
     "pac": 190,
-    "custo_kg": 90,
+    "custo_kg": 190,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "alulose": 100
@@ -796,7 +796,7 @@
     "alcool": 0,
     "pod": 1.9,
     "pac": 4.9,
-    "custo_kg": 16,
+    "custo_kg": 20,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "maltose": 3,
@@ -818,7 +818,7 @@
     "alcool": 0,
     "pod": 0,
     "pac": 1090,
-    "custo_kg": 4,
+    "custo_kg": 5,
     "pod_pac_auto": true,
     "perfil_acucares": {
       "sal": 100
@@ -838,7 +838,7 @@
     "alcool": 33.4,
     "pod": 0,
     "pac": 247.2,
-    "custo_kg": 80,
+    "custo_kg": 95,
     "pod_pac_auto": true,
     "perfil_acucares": {}
   },
