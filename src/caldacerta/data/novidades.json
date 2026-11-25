@@ -15,7 +15,7 @@
       "alcool": 0,
       "pod": 65.0,
       "pac": 280.0,
-      "custo_kg": 60,
+      "custo_kg": 38,
       "pod_pac_auto": true,
       "perfil_acucares": {
         "eritritol": 100
@@ -59,7 +59,7 @@
       "alcool": 0,
       "pod": 99.9,
       "pac": 279.7,
-      "custo_kg": 90,
+      "custo_kg": 75,
       "pod_pac_auto": true,
       "perfil_acucares": {
         "eritritol": 99.86,
@@ -82,7 +82,7 @@
       "alcool": 0,
       "pod": 0.8,
       "pac": 5.0,
-      "custo_kg": 150,
+      "custo_kg": 210,
       "pod_pac_auto": true,
       "perfil_acucares": {},
       "nota": "Blend 50/50 típico. A caseína encorpa e prende água, mas em excesso deixa a massa pastosa/borrachuda.",
@@ -103,7 +103,7 @@
       "alcool": 0,
       "pod": 0.4,
       "pac": 2.5,
-      "custo_kg": 14,
+      "custo_kg": 15,
       "pod_pac_auto": true,
       "perfil_acucares": {},
       "nota": "Leite concentrado por ultrafiltração: ~70% mais proteína e ~50% menos lactose que o comum. As versões 'zero lactose' trocam a lactose por glicose + galactose (PAC maior que o informado aqui).",
@@ -123,7 +123,7 @@
       "alcool": 0,
       "pod": 0.8,
       "pac": 4.9,
-      "custo_kg": 5.5,
+      "custo_kg": 5.6,
       "pod_pac_auto": true,
       "perfil_acucares": {},
       "fonte": "USDA FDC 'Milk, lowfat, fluid, 1% milkfat' (SR Legacy 01082)."
@@ -186,7 +186,7 @@
       "alcool": 0,
       "pod": 120.6,
       "pac": 4.2,
-      "custo_kg": 160,
+      "custo_kg": 195,
       "pod_pac_auto": true,
       "perfil_acucares": {
         "sucralose": 0.2
@@ -211,7 +211,7 @@
       "alcool": 0,
       "pod": 0.0,
       "pac": 0.0,
-      "custo_kg": 150,
+      "custo_kg": 100,
       "pod_pac_auto": true,
       "perfil_acucares": {},
       "nota": "Hidrata a frio. Muito potente: 0,3–1 g por kg de calda.",
@@ -236,7 +236,7 @@
       "alcool": 0,
       "pod": 0.0,
       "pac": 0.0,
-      "custo_kg": 250,
+      "custo_kg": 350,
       "pod_pac_auto": true,
       "perfil_acucares": {},
       "nota": "Só hidrata por completo a quente (~80 °C). Numa base fria fica quase inerte.",
@@ -261,7 +261,7 @@
       "alcool": 0,
       "pod": 78.8,
       "pac": 125.9,
-      "custo_kg": 60,
+      "custo_kg": 95,
       "pod_pac_auto": true,
       "perfil_acucares": {
         "glicose": 33.9,

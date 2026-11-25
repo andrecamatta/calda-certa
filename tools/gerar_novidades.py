@@ -31,7 +31,7 @@ def ing(id, nome, categoria, agua, gordura=0, proteina=0, acucares=0, sng=0, lac
 
 INGREDIENTES = [
     # ---- adoçantes sem açúcar (item 3) ----
-    ing("ing_eritritol_puro", "Eritritol (cristal)", "Açúcares", 0, outros=100, perfil={"eritritol": 100}, custo=60,
+    ing("ing_eritritol_puro", "Eritritol (cristal)", "Açúcares", 0, outros=100, perfil={"eritritol": 100}, custo=38,
         nota="Poliol: ~65% da doçura da sacarose, ~0 kcal, PAC alto (2,8× a sacarose pela massa molar), mas recristaliza "
              "acima de ~6% da calda (textura arenosa/dura). O app original o removeu por um estudo observacional "
              "(Witkowski et al., Nature Medicine 2023) que associou eritritol no sangue a eventos cardiovasculares; "
@@ -42,21 +42,21 @@ INGREDIENTES = [
              "mas não no PAC nem no corpo. Pese em balança de 0,01 g ou dilua 1 g em 99 g de água.",
         fonte="FDA, Aspartame and Other Sweeteners in Food / High-Intensity Sweeteners."),
     ing("ing_eritritol_estevia", "Adoçante Eritritol + Estévia (1:1 culinário)", "Açúcares", 0, outros=100,
-        perfil={"eritritol": 99.86, "esteviosideos": 0.14}, custo=90,
+        perfil={"eritritol": 99.86, "esteviosideos": 0.14}, custo=75,
         nota="Mistura de mercado 'troca 1:1 com açúcar' (doçura ≈ sacarose). Para o motor é quase todo eritritol: "
              "mesmos alertas de recristalização e tolerância digestiva.",
         fonte="Proporção calculada para POD ≈ 100 com estévia (Reb A) a 250× a sacarose."),
     # ---- proteínas e lácteos (item 5) ----
     ing("ing_whey_caseina", "Proteína Whey + Caseína (blend, sem sabor)", "Lácteos", 5, gordura=4, proteina=75, sng=84,
-        lactose=5, outros=7, custo=150, caseina=37.5,
+        lactose=5, outros=7, custo=210, caseina=37.5,
         nota="Blend 50/50 típico. A caseína encorpa e prende água, mas em excesso deixa a massa pastosa/borrachuda.",
         fonte="Rótulo típico de blend whey/caseína (75–80% de proteína)."),
     ing("ing_leite_uf_proteico", "Leite Ultrafiltrado Alta Proteína (semidesnatado)", "Lácteos", 89, gordura=1.9,
-        proteina=5.4, sng=9.1, lactose=2.5, custo=14,
+        proteina=5.4, sng=9.1, lactose=2.5, custo=15,
         nota="Leite concentrado por ultrafiltração: ~70% mais proteína e ~50% menos lactose que o comum. As versões "
              "'zero lactose' trocam a lactose por glicose + galactose (PAC maior que o informado aqui).",
         fonte="Rótulo típico (13 g de proteína e 6 g de açúcar por 240 ml)."),
-    ing("ing_leite_1", "Leite Semidesnatado 1%", "Lácteos", 89.9, gordura=1, proteina=3.3, sng=9.1, lactose=4.9, custo=5.5,
+    ing("ing_leite_1", "Leite Semidesnatado 1%", "Lácteos", 89.9, gordura=1, proteina=3.3, sng=9.1, lactose=4.9, custo=5.6,
         fonte="USDA FDC 'Milk, lowfat, fluid, 1% milkfat' (SR Legacy 01082)."),
     ing("ing_bebida_amendoas", "Bebida de Amêndoas sem açúcar", "Líquidos", 97.6, gordura=1.1, proteina=0.4, outros=1.3,
         custo=25, fibra=0.3, cinzas=0.4,
@@ -68,23 +68,23 @@ INGREDIENTES = [
         nota="Proteína vegetal: absorve muita água e pode deixar gosto terroso; combine com cacau ou café.",
         fonte="Rótulo típico de isolado de ervilha (80% de proteína)."),
     ing("ing_proteina_chocolate", "Proteína em pó sabor chocolate (whey concentrado, com sucralose)", "Lácteos", 5,
-        gordura=5, proteina=70, sng=76, lactose=4, outros=14, perfil={"sucralose": 0.2}, custo=160, caseina=0,
+        gordura=5, proteina=70, sng=76, lactose=4, outros=14, perfil={"sucralose": 0.2}, custo=195, caseina=0,
         fibra=4, cinzas=1,
         nota="Um scoop ≈ 30 g. Leva cacau e sucralose: adoça sem PAC.",
         fonte="Rótulo típico de whey concentrado sabor chocolate (≈ 21 g de proteína por 30 g)."),
     # ---- estabilizantes (item 4) ----
-    ing("ing_goma_xantana", "Goma Xantana", "Estabilizantes", 10, outros=90, custo=150, fibra=85, cinzas=5,
+    ing("ing_goma_xantana", "Goma Xantana", "Estabilizantes", 10, outros=90, custo=100, fibra=85, cinzas=5,
         dose_max_pct=0.1, ativacao="frio", defeito_excesso="viscosa/babenta (escorre em fio, textura de catarro)",
         nota="Hidrata a frio. Muito potente: 0,3–1 g por kg de calda.",
         fonte="Goff & Hartel, Ice Cream, 7ª ed. (2013), cap. 4 (estabilizantes)."),
-    ing("ing_goma_alfarroba", "Goma Alfarroba (LBG, pura)", "Estabilizantes", 10, proteina=5, outros=90, custo=250,
+    ing("ing_goma_alfarroba", "Goma Alfarroba (LBG, pura)", "Estabilizantes", 10, proteina=5, outros=90, custo=350,
         fibra=82, cinzas=1, dose_max_pct=0.3, ativacao="quente",
         defeito_excesso="gomosa/elástica (puxa como chiclete)",
         nota="Só hidrata por completo a quente (~80 °C). Numa base fria fica quase inerte.",
         fonte="Goff & Hartel, Ice Cream, 7ª ed. (2013), cap. 4 (estabilizantes)."),
     # ---- comida de verdade para o Creami (item 8) ----
     ing("ing_tamara", "Tâmara sem caroço (Medjool)", "Frutas", 21.3, gordura=0.2, proteina=1.8, acucares=66.5,
-        outros=12, perfil={"glicose": 33.9, "frutose": 32.1, "sacarose": 0.5}, custo=60, fibra=6.7, cinzas=1.7,
+        outros=12, perfil={"glicose": 33.9, "frutose": 32.1, "sacarose": 0.5}, custo=95, fibra=6.7, cinzas=1.7,
         nota="Açúcar praticamente invertido (glicose + frutose): PAC alto. 1 tâmara Medjool ≈ 24 g sem caroço.",
         fonte="USDA FDC 'Dates, medjool' (SR Legacy 09421)."),
     ing("ing_nozes", "Nozes", "Pastas & Nuts", 4.1, gordura=65.2, proteina=15.2, acucares=2.6, outros=28.1,

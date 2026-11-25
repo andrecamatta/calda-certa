@@ -88,7 +88,7 @@ def test_balancear_sem_destravados(capsys):
 def test_ficha_texto_e_md(capsys, tmp_path):
     code, out, _ = rodar(capsys, "ficha", "rec_fiordilatte", "--formato", "texto")
     assert code == 0 and out.startswith("Fior di Latte (V1.0) — Gelato · Base Branca")
-    assert "Custo\tR$ 13,00/kg" in out
+    assert "Custo\tR$ 20,69/kg" in out
     md = tmp_path / "f.md"
     code, out, _ = rodar(capsys, "ficha", "rec_fiordilatte", "-o", str(md))
     assert md.read_text(encoding="utf-8").startswith("# Fior di Latte (V1.0)")

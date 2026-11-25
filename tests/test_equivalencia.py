@@ -38,7 +38,26 @@ CAMPOS_ING = {
     "cost": "custo_kg", "autoPodPac": "pod_pac_auto",
 }
 
-ING = dados.mapa_ingredientes()
+# Preços originais do app congelados em ``tests/fixtures/referencia_js.json``;
+# os preços em ``ingredientes.json`` são atualizados periodicamente para o mercado.
+CUSTOS_REFERENCIA_APP = {
+    "ing_leite_int": 5.2, "ing_leite_desn": 4.8, "ing_creme_35": 34, "ing_leite_po_desn": 38,
+    "ing_leite_po_int": 36, "ing_mascarpone": 68, "ing_iogurte_nat": 14, "ing_leite_cond": 16.5,
+    "ing_sacarose": 4.9, "ing_dextrose": 18, "ing_glicose_po": 22, "ing_glicose_liq": 15,
+    "ing_acucar_inv": 28, "ing_mel": 45, "ing_goma_guar": 145, "ing_inulina": 52,
+    "ing_polidextrose": 48, "ing_agua": 0.5, "ing_gema": 32, "ing_manteiga": 44,
+    "ing_oleo_coco": 39, "ing_cacau_po": 58, "ing_choc_70": 89, "ing_choc_54": 78,
+    "ing_choc_leite": 74, "ing_choc_branco": 82, "ing_pasta_pistache": 245, "ing_pasta_avela": 135,
+    "ing_pasta_amendoim": 29, "ing_polpa_manga": 14.5, "ing_polpa_morango": 18, "ing_suco_limao": 9,
+    "ing_polpa_maracuja": 24, "ing_banana": 7.5, "ing_doce_leite": 30, "ing_leite_coco": 22,
+    "ing_cafe": 60, "ing_whey_iso": 180, "ing_alulose": 90, "ing_aveia": 16,
+    "ing_sal": 4, "ing_destilado_40": 80, "ing_mirtilo": 70, "ing_framboesa": 80, "ing_amora": 45,
+}
+
+ING = {
+    iid: {**ing, "custo_kg": CUSTOS_REFERENCIA_APP.get(iid, ing["custo_kg"])}
+    for iid, ing in dados.mapa_ingredientes().items()
+}
 MAQ = {m["id"]: m for m in dados.maquinas()}
 PERF = {p["id"]: p for p in dados.perfis()}
 

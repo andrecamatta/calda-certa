@@ -445,7 +445,7 @@ def test_ingrediente_extra_mostrar_editar_remover(capsys, dados_temporarios):
     assert e["ingrediente"]["ativacao"] == "frio"
     assert (dados_temporarios / "novidades.json").exists()
     assert not (dados_temporarios / "ingredientes.json").exists()
-    assert TODOS["ing_goma_xantana"]["custo_kg"] == 150  # pacote intocado
+    assert TODOS["ing_goma_xantana"]["custo_kg"] == 100  # pacote intocado
     g = rodar_json(capsys, "ingrediente", "editar", "ing_goma_guar", "--kcal-100g", "190", "--dose-max-pct", "0.25")
     assert g["ingrediente"]["kcal_100g"] == 190 and g["ingrediente"]["dose_max_pct"] == 0.25
     assert dados.mapa_ingredientes()["ing_goma_guar"]["dose_max_pct"] == 0.25
