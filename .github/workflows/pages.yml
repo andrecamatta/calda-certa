@@ -1,3 +1,4 @@
+# Publica a interface web estática (web/) em https://andrecamatta.github.io/calda-certa/
 name: Deploy Calda Certa no GitHub Pages
 
 on:
